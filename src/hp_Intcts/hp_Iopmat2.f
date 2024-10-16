@@ -11,6 +11,7 @@
       real(ki) b0
       integer i,j,k
       real(ki) xl12,xlfs,xlrf,p(mxpart,4)
+      real(ki) diffmasren,diffmasfac,diffrenfac      
       double precision x1,x2,dot
       double precision xl12_lowprec,xlfs_lowprec,xlrf_lowprec
       real(ki) xa,xb
@@ -99,18 +100,25 @@ c      xb=0.2_ki
 c      write(6,*) 'x1 xa =',x1,xa
 c      write(6,*) 'x2 xb =',x2,xb
 c      pause
-      
+
+      diffmasren=abs(two*dot(p,1,2)-musq)
+      diffmasfac=abs(two*dot(p,1,2)-facscale**2)
+      diffrenfac=abs(musq-facscale**2)
+
 c---  xl12=Log[Q^2/muR^2]
       xl12_lowprec=log(two*dot(p,1,2)/musq)
       xl12=real(xl12_lowprec,kind=ki)
+      if (diffmasren.lt.1e-6_ki) xl12=zip
       
 c---  xlfs=Log[Q^2/muF^2]
       xlfs_lowprec=log(two*dot(p,1,2)/facscale**2)
       xlfs=real(xlfs_lowprec,kind=ki)
+      if (diffmasfac.lt.1e-6_ki) xlfs=zip
 
 c---  xlrf=Log[muR^2/muF^2]
       xlrf_lowprec=log(musq/facscale**2)
       xlrf=real(xlrf_lowprec,kind=ki)
+      if (diffrenfac.lt.1e-6_ki) xlrf=zip
 
 c      ason2pi2=ason2pi**2
             

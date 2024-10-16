@@ -85,7 +85,7 @@
       logical keepterm1, keepterm2
       double precision tiny,tin2
       tiny=factiny
-      tin2=1d-2
+      tin2=5d-3
             
       if (first) myshot=0
       
@@ -249,36 +249,31 @@ c--- Calculate the required matrix elements
            call gg_hgaga_v_cf(p,tmp1)
            call gg_hgaga_vv_cf(p,tmp2)
            
-c           if (
-c     1          abs(res(0,0,0,0,2,2,-1)).gt.1d-7.or.
-c     1          z.lt.tin2.or.
-c     2          t.lt.tin2.or.
-c     3          z.gt.(1d0-tin2).or.
-c     4          t.gt.(1d0-tin2).or.
-c     5          abs(9d0*z-t).lt.tin2.or.
-c     6          abs(9d0*t-z).lt.tin2.or.
-c     7          abs(z-t).lt.tin2
-c     8          ) then
+           if (
+     1          z.lt.tin2.or.
+     2          t.lt.tin2.or.
+     3          z.gt.(1d0-tin2).or.
+     4          t.gt.(1d0-tin2).or.
+     5          abs(9d0*z-t).lt.tin2.or.
+     6          abs(9d0*t-z).lt.tin2.or.
+     7          abs(z-t).lt.tin2
+     8          ) then
               call iopmat2(p,z,t)
               call BuildICT(p,tmp1,tmp2,resab,1d0,0d0)
               call BuildICT(p,tmp1,tmp2,resba,0d0,1d0)
-c              write(6,*) resab(0,0,0,0,2,2,0)
-c     1                  +resba(0,0,0,0,2,2,0)!+tmp2(g,g,-1)
-c              write(6,*) 'hp'
-c           else
-c              call hp_iopmat2(p,z,t)
+           else
+              call hp_iopmat2(p,z,t)
 c              write(6,*) resab(0,0,0,0,1,1,-1)
-c     1             +resba(0,0,0,0,1,1,-1) +tmp2(g,g,-1)              
-c              call hp_BuildICT(p,tmp1,tmp2,resab,1d0,0d0)
-c              call hp_BuildICT(p,tmp1,tmp2,resba,0d0,1d0)
+c     1             +resba(0,0,0,0,1,1,-1) +tmp2(g,g,-1)
+              call hp_BuildICT(p,tmp1,tmp2,resab,1d0,0d0)
+              call hp_BuildICT(p,tmp1,tmp2,resba,0d0,1d0)
 c              write(6,*) 'lp'
 c              write(6,*) resab(0,0,0,0,2,2,-1)
 c     1                  +resba(0,0,0,0,2,2,-1)
 c              write(6,*) resab(0,0,0,0,2,2,0)
-c     1                  +resba(0,0,0,0,2,2,0)!+tmp2(g,g,-1)
+c     1                  +resba(0,0,0,0,2,2,0)
 c              write(6,*) 
-c           endif
-
+           endif
 
 c           write(6,*)
 c           FMT1="('msqv1={',4(F23.17,','),F23.17,'};')"

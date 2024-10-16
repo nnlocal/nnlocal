@@ -33,7 +33,6 @@
       tmp = 3*z1*z2*ab(2)**2*ab(1)
       res(1,1,-4) = real(tmp,ki)
 
-      
 !##### TRIPLE POLE #####
 
       
@@ -504,8 +503,8 @@
       ab(5)=ab(5)*ab(14)
       ab(6)=85.0_ki/3.0_ki - ab(18)
       ab(6)=l5*ab(6)
-      ab(1)=ab(3) + ab(1) + ab(5) + ab(21) + ab(4) + ab(6) + 551.0_ki/18.D
-     & 0 + ab(10)
+      ab(1)=ab(3) + ab(1) + ab(5) + ab(21) + ab(4) + ab(6) 
+     & + 551.0_ki/18.0_ki + ab(10)
       ab(1)=xa*ab(1)
       ab(3)= - 2 - ab(2)
       ab(3)=2.0_ki/3.0_ki*ab(3) + d5

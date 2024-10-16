@@ -11,7 +11,7 @@ C     returns Li_3(x) for real x, minf < x < 1
         stop
       endif
       
-      hp_Li3 = hp_wgplg(2,1,x)
-c      hp_Li3 = real(hp_wgplg(2,1,x),ki)
+c      hp_Li3 = hp_wgplg(2,1,x)
+      hp_Li3 = real(hp_wgplg(2,1,x),ki)
 
       end

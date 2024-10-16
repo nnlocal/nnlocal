@@ -32,7 +32,7 @@ c--complex dilogarithm (spence-function)
       r2=xr*xr+xi*xi
       hp_cli2=cplx2(zip,zip)
       if (((xi/xr).eq.zip).and.(xr.gt.one)) then
-         xi=-2d-15
+         xi=-2e-15_ki
          r2=xr*xr+xi*xi
          xtmp=xr+im*xi
       endif

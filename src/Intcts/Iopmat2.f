@@ -100,8 +100,6 @@ c      xb=0.2_ki
 c      write(6,*) 'x1 xa =',x1,xa
 c      write(6,*) 'x2 xb =',x2,xb
 c      pause
-
-      
       
       diffmasren=abs(two*dot(p,1,2)-musq)
       diffmasfac=abs(two*dot(p,1,2)-facscale**2)
