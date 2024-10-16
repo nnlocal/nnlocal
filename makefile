@@ -4,7 +4,7 @@
 NNLOCALHOME        = $(PWD)
 SOURCEDIR       = $(NNLOCALHOME)/src
 VPATH		= $(DIRS)
-BIN		= $(NNLOCALHOME)/Bin
+BIN		= $(NNLOCALHOME)/bin
 INCPATH  	= $(SOURCEDIR)/Inc
 INCPATH2  	= $(SOURCEDIR)/Intcts/include
 INCPATH3  	= $(SOURCEDIR)/hp_Intcts/include
@@ -364,18 +364,18 @@ obj:
 nnlocal: $(ALLNNLOCAL)
 	$(FC) $(FFLAGS) -L$(LIBDIR) -o $@ \
 	$(patsubst %,obj/%,$(ALLNNLOCAL)) $(LIBFLAGS) 
-	mv nnlocal Bin/
+	mv nnlocal bin/
 	@echo $(PDFMSG)
 
 gridplot: rgrids.o
 	$(FC) $(FFLAGS) -o  $@ \
 	$(patsubst %,obj/%,rgrids.o)
-	mv gridplot Bin/
+	mv gridplot bin/
 
 mergedata: mergedata.o
 	$(FC) $(FFLAGS) -o  $@ \
 	$(patsubst %,obj/%,mergedata.o)
-	mv mergedata Bin/
+	mv mergedata bin/
 
 
 %.o: %.f90
@@ -392,10 +392,10 @@ mergedata: mergedata.o
 
 
 clean:
-	- rm -f *.o obj/*.o obj/*.mod Bin/nnlocal Bin/gridplot Bin/mergedata*.s *~ core
+	- rm -f *.o obj/*.o obj/*.mod bin/nnlocal bin/gridplot bin/mergedata*.s *~ core
 
 very-clean:
-	- rm -f *.o Bin/nnlocal Bin/gridplot Bin/mergedata *.s *~ core
+	- rm -f *.o bin/nnlocal bin/gridplot bin/mergedata *.s *~ core
 	- rm -fr obj
 
 # -----------------------------------------------------------------------------
