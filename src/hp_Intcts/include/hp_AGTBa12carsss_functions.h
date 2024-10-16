@@ -1,0 +1,77 @@
+!--- include file for double soft ct's
+      real(ki) z1
+      real(ki) z2
+      real(ki) z3
+      real(ki) z4
+      real(ki) z5
+      real(ki) z6
+      real(ki) z7
+      real(ki) z8
+      real(ki) z9
+      real(ki) z10
+      complex(ki) l1
+      complex(ki) l2
+      complex(ki) l3
+      complex(ki) l4
+      complex(ki) l5
+      complex(ki) l6
+      complex(ki) l7
+      complex(ki) l8
+      complex(ki) l9
+      complex(ki) l10
+      complex(ki) l11
+      complex(ki) d1
+      complex(ki) d2
+      complex(ki) d3
+      complex(ki) d4
+      complex(ki) d5
+      complex(ki) d6
+      complex(ki) d7
+      complex(ki) d8
+      complex(ki) d9
+      complex(ki) d10
+      complex(ki) d11
+      complex(ki) d12
+      complex(ki) d13
+      complex(ki) d14
+      complex(ki) d15
+      complex(ki) d16
+      complex(ki) d17
+      z1 = (1/(-1 + xb))
+      z2 = (1/(1 + xb))
+      z3 = (1/(xa + xb))
+      z4 = (1/(-xa + xb))
+      z5 = (1/(-1 + xa*xb))
+      z6 = (1/(-1 + xa))
+      z7 = (1/(xa - xb))
+      z8 = (1/(-2 + xa + xb))
+      z9 = (1/(1 + xa))
+      z10 = (1/xa)
+      l1 = log(2*cone)
+      l2 = log(cone*(1 - xa))
+      l3 = log(cone*xa)
+      l4 = log(cone*(1 + xa))
+      l5 = log(cone*(xa - xb))
+      l6 = log(cone*(1 - xb))
+      l7 = log(cone*xb)
+      l8 = log(cone*(1 + xb))
+      l9 = log(cone*(2 - xa - xb))
+      l10 = log(cone*(xa + xb))
+      l11 = log(cone*(1 - xa*xb))
+      d1 = hp_cli2((cone*(1 - xb))/(-1 + xa))
+      d2 = hp_cli2((cone*(xa - xb))/(2.0_ki*(-1 + xa)))
+      d3 = hp_cli2((cone*(xa - xb))/(-1 + xa))
+      d4 = hp_cli2(-(cone*xa))
+      d5 = hp_cli2(cone*xa)
+      d6 = hp_cli2((cone*(-1 + xa))/(-1 + xb))
+      d7 = hp_cli2(-(cone*xb))
+      d8 = hp_cli2(cone*xb)
+      d9 = hp_cli2((cone*xb)/xa)
+      d10 = hp_cli2(cone*xa*xb)
+      d11 = hp_cli2((cone*xb**2)/xa**2)
+      d12 = hp_cli2((cone*(1 + xb))/(1 + xa))
+      d13 = hp_cli2((cone*xa*(1 + xb))/(1 + xa))
+      d14 = hp_cli2((cone*(xa + xb))/(1 + xa))
+      d15 = hp_cli2((cone*(xa + xb))/(1 + xb))
+      d16 = hp_cli2((cone*(-1 + xa))/(-1 + xa*xb))
+      d17 = hp_cli2((cone*(-1 + xa**2))/(-1 + xa*xb))

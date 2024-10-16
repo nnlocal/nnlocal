@@ -1,0 +1,6 @@
+'beta'           [file version number]  
+709  '  f(p1)+f(p2) --> H-->(gamma(p3)+gamma(p4)) +f(p5) [EFT] ' 'N'
+710 '  f(p1)+f(p2) --> H-->(gamma(p3)+gamma(p4)) [EFT] ' 'NN'
+711 '  f(p1)+f(p2) --> H [EFT-TOTAL] ' 'NN'
+' 'X'
+1000 'EOF' 'X'
