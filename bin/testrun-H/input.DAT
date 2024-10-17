@@ -22,7 +22,7 @@
 200		[(ncall real)/(ncall born)]
 189		[ij]
 .false.		[dryrun]
-1		[parallel]
+0		[parallel]
 .false.		[finite masse correction]
 
 [Heavy quark masses]
