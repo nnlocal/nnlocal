@@ -1,13 +1,13 @@
       subroutine nnlocal_main(inputfile,workdir)
 ************************************************************************
 *                                                                      *
-*  This is the main program for MCFM                                   *
+*  This is the main program for NNLOCAL                                *
 *                                                                      *
 *  The sequence of calls should always be:                             *
-*   call mcfm_init          : basic variable initialization, print-out *
-*   call mcfm_vegas(warmup) : warm-up the Vegas grid                   *
-*   call mcfm_vegas(accum)  : accumulate results                       *
-*   call mcfm_exit          : final processing and print-out           *
+*   call nnlocal_init          : basic var. initialization, print-out  *
+*   call nnlocal_vegas(warmup) : warm-up the Vegas grid                *
+*   call nnlocal_vegas(accum)  : accumulate results                    *
+*   call nnlocal_exit          : final processing and print-out        *
 *                                                                      *
 ************************************************************************
       implicit none

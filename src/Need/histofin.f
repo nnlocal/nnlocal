@@ -37,15 +37,7 @@ c      character*255 outfilepwg
       if (itno .eq. 0) then
       write(6,*)
       write(6,*) '****************************************************'
-      if (vanillafiles) then
-        write(6,*) 'output file name normally  ',runname(1:nlength)
-        runname='mcfm-output'
-        nlength=11
-        write(6,*)
-        write(6,*) '  but renamed to: ',runname
-      else
-        write(6,*) 'output files  ',runname(1:nlength)
-      endif
+      write(6,*) 'output files  ',runname(1:nlength)
       write(6,*) '****************************************************'
       call flush(6)
       scaleplots=.false.
@@ -103,21 +95,12 @@ c      if (writegnu) then
 c      call writeinfo(97,'# ',xsec,xsec_err,itno) 
 c      write(97,120) outfileps(1:nlength+3)
 c      endif
-      if (writeroot) then
-      call writeinfo(96,'//',xsec,xsec_err,itno) 
-      write(96,121) outfileroot(1:nlength+5)
-      endif
 
   120 FORMAT (/1x,
      & ' set terminal postscript col enhanced', /1x,
      & ' set output "', A, '"', /1X,
      & ' set style data points', /1X,
      & ' set key off')
-  121 FORMAT (/1x,
-     & ' {', /1x,
-     & ' mcfmhisto = new TFile("', A, '", "recreate");',/1x,
-     & ' mcfmhisto -> cd();',/1x,
-     & ' histos = new TObjArray(0);',/1x)
 
 
 c--- make sure to scale results by the maximum number of iterations
@@ -198,17 +181,6 @@ c      endif
       if (writetop) close(unit=99)
       if (writegnu) close(unit=97)
 
-      if (writeroot) then
-c--F  closing statements for root file
-        write(96,*) ' mcfmhisto -> cd();'
-        write(96,*) ' if (histos -> GetEntries() > 0 ) then  {'
-        write(96,*) '  histos->Write();'
-        write(96,*) '  mcfmhisto -> Close();'
-        write(96,*) ' }'
-        write(96,*) '}'
-        close(unit=96)
-      endif
-      
 
 c---generate error file
       if ((PDFerrors) .and. (ICOUNTHISTO .gt. 0)) then
