@@ -221,117 +221,118 @@ c---  END DEBUG
       
 c--- Calculate the required matrix elements      
       if (case .eq. 'H_gaga') then
-        call gg_hgamgam(p,msq)
-        if (order.ge.1) then
-           call gg_hgamgam_v(p,msqv)
-           call iopmat1(p,z,t)
-        endif
-        if (order.gt.1) then
+         keepterm1=.true.
+         call gg_hgamgam(p,msq)
+         if (order.ge.1) then
+            call gg_hgamgam_v(p,msqv)
+            call iopmat1(p,z,t)
+         endif
+         if (order.gt.1) then
+            
+            keepterm1=.true.
+            keepterm2=.true.
 
-           keepterm1=.true.
-           keepterm2=.true.
-
-           if (keepterm2.eqv..false.) goto 555
+            if (keepterm2.eqv..false.) goto 555
            
-           if (
-     1          z.lt.tiny.or.
-     2          t.lt.tiny.or.
-     3          z.gt.(1d0-tiny/100d0).or.
-     4          t.gt.(1d0-tiny/100d0).or.
-     5          abs(9d0*z-t).lt.tiny.or.
-     6          abs(9d0*t-z).lt.tiny.or.
-     7          abs(z-t).lt.tiny
-     8          ) then
-              keepterm2=.false.
-              goto 555
-           endif
-           
-           call gg_hgaga_v_cf(p,tmp1)
-           call gg_hgaga_vv_cf(p,tmp2)
-           
-           if (
-     1          z.lt.tin2.or.
-     2          t.lt.tin2.or.
-     3          z.gt.(1d0-tin2).or.
-     4          t.gt.(1d0-tin2).or.
-     5          abs(9d0*z-t).lt.tin2.or.
-     6          abs(9d0*t-z).lt.tin2.or.
-     7          abs(z-t).lt.tin2
-     8          ) then
-              call iopmat2(p,z,t)
-              call BuildICT(p,tmp1,tmp2,resab,1d0,0d0)
-              call BuildICT(p,tmp1,tmp2,resba,0d0,1d0)
-           else
-              call hp_iopmat2(p,z,t)
-c              write(6,*) resab(0,0,0,0,1,1,-1)
+            if (
+     1           z.lt.tiny.or.
+     2           t.lt.tiny.or.
+     3           z.gt.(1d0-tiny/100d0).or.
+     4           t.gt.(1d0-tiny/100d0).or.
+     5           abs(9d0*z-t).lt.tiny.or.
+     6           abs(9d0*t-z).lt.tiny.or.
+     7           abs(z-t).lt.tiny
+     8           ) then
+               keepterm2=.false.
+               goto 555
+            endif
+            
+            call gg_hgaga_v_cf(p,tmp1)
+            call gg_hgaga_vv_cf(p,tmp2)
+            
+            if (
+     1           z.lt.tin2.or.
+     2           t.lt.tin2.or.
+     3           z.gt.(1d0-tin2).or.
+     4           t.gt.(1d0-tin2).or.
+     5           abs(9d0*z-t).lt.tin2.or.
+     6           abs(9d0*t-z).lt.tin2.or.
+     7           abs(z-t).lt.tin2
+     8           ) then
+               call iopmat2(p,z,t)
+               call BuildICT(p,tmp1,tmp2,resab,1d0,0d0)
+               call BuildICT(p,tmp1,tmp2,resba,0d0,1d0)
+            else
+               call hp_iopmat2(p,z,t)
+c     write(6,*) resab(0,0,0,0,1,1,-1)
 c     1             +resba(0,0,0,0,1,1,-1) +tmp2(g,g,-1)
-              call hp_BuildICT(p,tmp1,tmp2,resab,1d0,0d0)
-              call hp_BuildICT(p,tmp1,tmp2,resba,0d0,1d0)
-c              write(6,*) 'lp'
-c              write(6,*) resab(0,0,0,0,2,2,-1)
+               call hp_BuildICT(p,tmp1,tmp2,resab,1d0,0d0)
+               call hp_BuildICT(p,tmp1,tmp2,resba,0d0,1d0)
+c     write(6,*) 'lp'
+c     write(6,*) resab(0,0,0,0,2,2,-1)
 c     1                  +resba(0,0,0,0,2,2,-1)
-c              write(6,*) resab(0,0,0,0,2,2,0)
+c     write(6,*) resab(0,0,0,0,2,2,0)
 c     1                  +resba(0,0,0,0,2,2,0)
-c              write(6,*) 
-           endif
-
-c           write(6,*)
-c           FMT1="('msqv1={',4(F23.17,','),F23.17,'};')"
-c           FMT2="('msqv2={',4(F23.17,','),F23.17,'};')"
-c           write(6,FMT1) tmp1(0,0,:)
-c           write(6,FMT2) tmp2(0,0,:)
-
- 555       continue
-
-              
-           if (check) then
-              if (z .gt. xx(1)) then
-                 x1onz=xx(1)/z
-                 call fdist(ih1,x1onz,facscale,fx1z)
-              endif
-              if (z .gt. xx(2)) then
-                 x2onz=xx(2)/z
-                 call fdist(ih2,x2onz,facscale,fx2z)
-              endif         
-              if (t .gt. xx(1)) then
-                 x1ont=xx(1)/t
-                 call fdist(ih1,x1ont,facscale,fx1t)
-              endif         
-              if (t .gt. xx(2)) then
-                 x2ont=xx(2)/t
-                 call fdist(ih2,x2ont,facscale,fx2t)
-              endif         
-              write(6,*) '1,1,ab', resab(g,g,g,g,1,1,:) !*fx1(g)*fx2(g)
-              write(6,*) '1,1,ba', resba(g,g,g,g,1,1,:) !*fx1(g)*fx2(g)
-              write(6,*) '1,1tot', resab(g,g,g,g,1,1,:)+resba(g,g,g,g,1,1,:)+tmp2(0,0,:)
-              write(6,*)
-              write(6,*) '1,2,ab', resab(g,g,g,g,1,2,:) !*fx1(g)*fx2t(g)/t
-              write(6,*) '1,2,ba', resba(g,g,g,g,1,2,:) !*fx1(g)*fx2t(g)/t
-              write(6,*) '1,2tot', resab(g,g,g,g,1,2,:)+resba(g,g,g,g,1,2,:)
-              write(6,*)              
-              write(6,*) '2,1,ab', resab(g,g,g,g,2,1,:) !*fx1z(g)/z*fx2(g)
-              write(6,*) '2,1,ba', resba(g,g,g,g,2,1,:) !*fx1z(g)/z*fx2(g)
-              write(6,*) '2,1tot', resab(g,g,g,g,2,1,:)+resba(g,g,g,g,2,1,:)
-              write(6,*)              
-              write(6,*) '2,2,ab', resab(g,g,g,g,2,2,:) !*fx1z(g)/z*fx2t(g)/t
-              write(6,*) '2,2,ba', resba(g,g,g,g,2,2,:) !*fx1z(g)/z*fx2t(g)/t
-              write(6,*) '2,2tot', resab(g,g,g,g,2,2,:)+resba(g,g,g,g,2,2,:)
-              write(6,*)              
-              write(6,*) '0,0,ab', resab(g,g,g,g,0,0,:) !*fx1z(g)/z*fx2z(g)/z
-              write(6,*) '0,0,ba', resba(g,g,g,g,0,0,:) !*fx1t(g)/t*fx2t(g)/t
-              write(6,*)
-              write(6,*) 'v     ',tmp1(g,g,:)/msq(g,g)/ason2pi
-              write(6,*) 'vv    ',tmp2(g,g,:)/msq(g,g)/ason2pi**2
-              write(6,*)
-              write(6,*) 'z=',z
-              write(6,*) 't=',t
-              pause
-              myexp = 1+ myexp
-              goto 101              
-           endif
-
-        endif
-
+c     write(6,*) 
+            endif
+            
+c     write(6,*)
+c     FMT1="('msqv1={',4(F23.17,','),F23.17,'};')"
+c     FMT2="('msqv2={',4(F23.17,','),F23.17,'};')"
+c     write(6,FMT1) tmp1(0,0,:)
+c     write(6,FMT2) tmp2(0,0,:)
+            
+ 555        continue
+            
+            
+            if (check) then
+               if (z .gt. xx(1)) then
+                  x1onz=xx(1)/z
+                  call fdist(ih1,x1onz,facscale,fx1z)
+               endif
+               if (z .gt. xx(2)) then
+                  x2onz=xx(2)/z
+                  call fdist(ih2,x2onz,facscale,fx2z)
+               endif         
+               if (t .gt. xx(1)) then
+                  x1ont=xx(1)/t
+                  call fdist(ih1,x1ont,facscale,fx1t)
+               endif         
+               if (t .gt. xx(2)) then
+                  x2ont=xx(2)/t
+                  call fdist(ih2,x2ont,facscale,fx2t)
+               endif         
+               write(6,*) '1,1,ab', resab(g,g,g,g,1,1,:) !*fx1(g)*fx2(g)
+               write(6,*) '1,1,ba', resba(g,g,g,g,1,1,:) !*fx1(g)*fx2(g)
+               write(6,*) '1,1tot', resab(g,g,g,g,1,1,:)+resba(g,g,g,g,1,1,:)+tmp2(0,0,:)
+               write(6,*)
+               write(6,*) '1,2,ab', resab(g,g,g,g,1,2,:) !*fx1(g)*fx2t(g)/t
+               write(6,*) '1,2,ba', resba(g,g,g,g,1,2,:) !*fx1(g)*fx2t(g)/t
+               write(6,*) '1,2tot', resab(g,g,g,g,1,2,:)+resba(g,g,g,g,1,2,:)
+               write(6,*)              
+               write(6,*) '2,1,ab', resab(g,g,g,g,2,1,:) !*fx1z(g)/z*fx2(g)
+               write(6,*) '2,1,ba', resba(g,g,g,g,2,1,:) !*fx1z(g)/z*fx2(g)
+               write(6,*) '2,1tot', resab(g,g,g,g,2,1,:)+resba(g,g,g,g,2,1,:)
+               write(6,*)              
+               write(6,*) '2,2,ab', resab(g,g,g,g,2,2,:) !*fx1z(g)/z*fx2t(g)/t
+               write(6,*) '2,2,ba', resba(g,g,g,g,2,2,:) !*fx1z(g)/z*fx2t(g)/t
+               write(6,*) '2,2tot', resab(g,g,g,g,2,2,:)+resba(g,g,g,g,2,2,:)
+               write(6,*)              
+               write(6,*) '0,0,ab', resab(g,g,g,g,0,0,:) !*fx1z(g)/z*fx2z(g)/z
+               write(6,*) '0,0,ba', resba(g,g,g,g,0,0,:) !*fx1t(g)/t*fx2t(g)/t
+               write(6,*)
+               write(6,*) 'v     ',tmp1(g,g,:)/msq(g,g)/ason2pi
+               write(6,*) 'vv    ',tmp2(g,g,:)/msq(g,g)/ason2pi**2
+               write(6,*)
+               write(6,*) 'z=',z
+               write(6,*) 't=',t
+               pause
+               myexp = 1+ myexp
+               goto 101              
+            endif
+            
+         endif
+         
       elseif (case .eq. 'H_tota') then
          origord=order
 c---  cut to simulate loss of cross section
