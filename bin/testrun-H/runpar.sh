@@ -2,10 +2,11 @@
 
 > Timings.txt
 
-ncores=100
-nprocessesgrid=100
-nprocessesaccu=400
-# First compile the pwhg_main executable in the ../ directory
+ncores=6
+nprocessesgrid=12
+nprocessesaccu=12
+
+# First compile the nnlocal executable in the ../../ directory
 #
 
 # the following function limits the number of subprocesses
@@ -13,13 +14,13 @@ nprocessesaccu=400
 # user
 
 function limit_procs {
-    while [ `jobs -p | wc -w` -gt $ncores ]
+    while [ `jobs -p | wc -w` -ge $ncores ]
     do
 	sleep 1
     done
 }
 
-maxgrid=5
+maxgrid=4
 # two stages of importance sampling grid calculation
 for igrid in `seq $maxgrid`
 do
@@ -34,6 +35,8 @@ done
 
 wait
 
+./reslist.sh st1-xg$igrid xg$igrid &
+
 done
 
 wait
@@ -46,6 +49,9 @@ do
     limit_procs
 done
 wait
+
+./reslist.sh st2 st2 &
+
 
 (echo 1 ; ls -c1 ????-????.gnu ; echo "") | ../mergedata
 mv fort.12 nnlocal-1.top
