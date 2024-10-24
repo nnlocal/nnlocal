@@ -1,7 +1,7 @@
 # Makefile routine.
 
 # PATHS
-NNLOCALHOME        = $(PWD)
+NNLOCALHOME     = $(PWD)
 SOURCEDIR       = $(NNLOCALHOME)/src
 VPATH		= $(DIRS)
 BIN		= $(NNLOCALHOME)/bin
@@ -334,9 +334,7 @@ setnotag.o
 
 LIBDIR=.
 
-# the files that do not go into the library                                                      
 MAIN = nnlocal.o
-
 
 ifeq ($(PDFROUTINES),LHAPDF)
    PARTONFILES += \
@@ -348,12 +346,10 @@ ifeq ($(PDFROUTINES),LHAPDF)
    PDFMSG='   ----> NNLOCAL compiled with LHAPDF routines <----'
 endif
 
-
-
 OURCODE = $(NEEDFILES)  $(PROCDEPFILES) \
           $(PHASEFILES) $(PSLIMITFILES) $(HPINTCTS) $(INTCTS) \
           $(USERFILES) $(GGHFILES)
-          
+
 OTHER = $(INTEGRATEFILES) $(PARTONFILES)
 
 ALLNNLOCAL = $(OURCODE) $(OTHER) $(MAIN)
@@ -377,19 +373,16 @@ mergedata: mergedata.o
 	$(patsubst %,obj/%,mergedata.o)
 	mv mergedata bin/
 
-
 %.o: %.f90
 	$(F90) $(F90FLAGS) -c -o obj/$@ $<
 
 %.o: %.cc
 	$(CXX) -c $(CXXFLAGS) `fastjet-config --cxxflags` -o obj/$@ $<
 
-
 # -----------------------------------------------------------------------------
 # Specify other options.
 
 # Specify the dependencies of the .o files and the rules to make them.
-
 
 clean:
 	- rm -f *.o obj/*.o obj/*.mod bin/nnlocal bin/gridplot bin/mergedata*.s *~ core
