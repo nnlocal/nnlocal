@@ -1,3 +1,15 @@
+!#####################################################################!
+! This subroutine combines Vegas grids from n runs at even statistics !
+! to build new grids. The combination is based on the average of the  !
+! cumulative distributions for each integration variable.             !
+! It uses the dzero subroutine to solve the equation f_i(x) = 1/n     !
+! where f_i(x) is the average of the cumulative distributions for     !
+! variable i and n goes from 1 to the number of bins for each variable!
+! in Vegas, N. The number of files with grids to combine, the         !
+! corresponding seeds and the integration stage are passed through the!
+! common block parallel.f.                                            !
+! Author F. Tramontano - Apr.24                                       !
+!#####################################################################!
 module Dyn_grids
   double precision, DIMENSION(:, :, :), ALLOCATABLE :: grids  
   double precision, DIMENSION(:, :), ALLOCATABLE :: xi
