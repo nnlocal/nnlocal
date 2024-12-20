@@ -158,7 +158,6 @@ c--- correction to epinv from AP subtraction when mu_FAC != mu_REN,
 c--- corresponding to subtracting -1/epinv*Pab*log(musq_REN/musq_FAC)
       epcorr=epinv+2d0*dlog(scale/facscale)
       
-c--- debug: note that we still have to cancel the sing. of integrated A1
       if (order.le.1) then
          APz(g,g,:)=0d0
          APt(g,g,:)=0d0
@@ -173,22 +172,6 @@ c--- debug: note that we still have to cancel the sing. of integrated A1
          APt(g,g,2)=+ason2pi*xn*2d0*(1d0/t+t*omt-2d0)*epcorr
          APt(g,g,3)=+ason2pi*xn*2d0/omt*epcorr
 
-c---  DEBUG: return ep^(-2) part
-c         APz(g,g,:)=0d0
-c         APt(g,g,:)=0d0   
-c---  END DEBUG
-c---  DEBUG: return ep^(-1) part
-c         epcorr=1d0
-c               
-c         APz(g,g,1)=+ason2pi*b0*epcorr
-c         APz(g,g,2)=+ason2pi*xn*2d0*(1d0/z+z*omz-2d0)*epcorr
-c         APz(g,g,3)=+ason2pi*xn*2d0/omz*epcorr
-c         
-c         APt(g,g,1)=+ason2pi*b0*epcorr
-c         APt(g,g,2)=+ason2pi*xn*2d0*(1d0/t+t*omt-2d0)*epcorr
-c         APt(g,g,3)=+ason2pi*xn*2d0/omt*epcorr
-c---  END DEBUG
-         
       endif
       
       do ia=-1,+1
@@ -203,15 +186,11 @@ c---  END DEBUG
       enddo
       enddo
       enddo      
-      
-      
-c 44   continue
-      
+            
       
 c--- Calculate the required matrix elements      
       if (case .eq. 'H_gaga') then
          
-c--- debug: to check only the correction
          if (includevirt) call gg_hgagag(p,msq)
          if (nproc.eq.710) then
             call gg_hgamgam_gs_cf(p,msqs,msqvs,msqx)
@@ -254,12 +233,7 @@ c--- debug: to check only the correction
          write(6,*) 'sum A1         ',A1sub
          write(6,*) '   ratio       ',A1sub/mx
          write(6,*) '    diff       ',mx-A1sub
-         
-
-         
-c         pause
-         endif
-
+      endif
       endif
 
       
@@ -310,7 +284,6 @@ c---  and set all PDF entries to zero
 c---  calculate PDF's         
          call fdist(ih1,xx(1),facscale,fx1)
          call fdist(ih2,xx(2),facscale,fx2)
-         
          
       endif
       
@@ -498,9 +471,9 @@ C--   gg
                      xmsq_bypart(nd,sgnj,sgnk)=xmsq_bypart(nd,sgnj,sgnk)+zmsq
                   endif
 
-               enddo    ! do nd=1,ndmax
+               enddo
                
-            endif    ! if (order.gt.1) then
+            endif
             
  20         continue
             
@@ -555,28 +528,18 @@ c--- code to check that epsilon poles cancel
           write(6,*) 'epsilon fails to cancel'
           write(6,*) 'xmsq (epinv=large) = ',xmsq_old
           write(6,*) 'xmsq (epinv=zero ) = ',xmsq(0)
-C          stop
         else
           write(6,*) 'Poles cancelled!'
-c          write(6,*) 'xmsq (epinv=large) = ',xmsq_old
-c          write(6,*) 'xmsq (epinv=zero ) = ',xmsq
-c          pause
        endif
 
        if (abs(zmsq_old/(xmsq(1)+xmsq(2)+xmsq(3))-1d0) .gt. 1d-6) then
           write(6,*) 'epsilon fails to cancel in z'
           write(6,*) 'zmsq (epinv=large) = ',zmsq_old
           write(6,*) 'zmsq (epinv=zero ) = ',zmsq
-C          stop
         else
           write(6,*) 'Poles cancelled in z!'
-c          write(6,*) 'zmsq (epinv=large) = ',zmsq_old
-c          write(6,*) 'zmsq (epinv=zero ) = ',zmsq
-c          pause
         endif
       endif
-
-
 
       
 c--- zero out temporary histograms
@@ -608,10 +571,8 @@ c---check whether each counter-event passes the cuts
 c---  the following logical should be activated inside dipoles
 c---  if alpha parameters are activated the computation could
 c---  be skipped
-c      incldip(nd)=.true.
            if (incldip(nd)) incldip(nd)=includedipole(nd,qv)
            if (incldip(nd) .eqv. .false.) failed=.true.
-c          write(6,*) nd,'incldip(',nd,')=',incldip(nd)
           
         endif
 
@@ -624,8 +585,6 @@ c          write(6,*) nd,'incldip(',nd,')=',incldip(nd)
           xmsq(nd)=0d0
           goto 997         
         endif
-
-
         
         xint=xint+xmsq(nd)*reweight        
 

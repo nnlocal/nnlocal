@@ -86,20 +86,10 @@ c      real(ki) ABa1carsr0g(2,2,-2:2),BAa1carsr0g(2,2,-2:2)
  
       real(ki) tempfcn(2,2)
 
-
-      character *60 FMT3
       integer eps
       
-      FMT3="(A20,4(F30.17,','),F30.16,'};')"
-
       xa=real(x1,kind=ki)
       xb=real(x2,kind=ki)
-c      xa=0.1_ki
-c      xb=0.2_ki
-      
-c      write(6,*) 'x1 xa =',x1,xa
-c      write(6,*) 'x2 xb =',x2,xb
-c      pause
 
       diffmasren=abs(two*dot(p,1,2)-musq)
       diffmasfac=abs(two*dot(p,1,2)-facscale**2)
@@ -120,21 +110,9 @@ c---  xlrf=Log[muR^2/muF^2]
       xlrf=real(xlrf_lowprec,kind=ki)
       if (diffrenfac.lt.1e-6_ki) xlrf=zip
 
-c      ason2pi2=ason2pi**2
-            
-c---  Log[Q^2/muR^2]
-c      xl12=zip
-
-c---  xlfs=Log[Q^2/muF^2]
-c      xlfs=zip
-
-c---  xlrf=Log[muR^2/muF^2]
-c      xlrf=zip
-           
+c---  Recall nf=0
       b0=(xn*11.0_ki)/6.0_ki
            
-c 10    continue
-
       ! (a,b,c,d) stand for incoming, hard, final1, final2
       do i=0,2
          do j=0,2
@@ -154,8 +132,6 @@ c 10    continue
             enddo
          enddo
       enddo
-
-
       
 c---  A2 Integrated counterterms
 
@@ -206,48 +182,7 @@ c---
       call hp_fillIop2_1(g,g,g,g,k,tmp3)
       
       call hp_addscale2(k,tmp3,tmpba3,xl12)
-      call hp_fillIop2_2(g,g,g,g,k,tmp3)
-
-      
-c$$$      write(6,*) 'xa=',xa
-c$$$      write(6,*) 'xb=',xb
-c$$$      write(6,*)
-c$$$c      write(6,*) 'I10'
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I10opeps[1,1]={',I10op1eps(g,g,g,1,1,:)+I10op2eps(g,g,g,1,1,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I10opeps[1,2]={',I10op1eps(g,g,g,1,2,:)+I10op2eps(g,g,g,2,1,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I10opeps[2,1]={',I10op1eps(g,g,g,2,1,:)+I10op2eps(g,g,g,1,2,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I10opeps[2,2]={',I10op1eps(g,g,g,2,2,:)+I10op2eps(g,g,g,2,2,:)
-c$$$      write(6,*)
-c$$$      write(6,*)
-c$$$      write(6,*) 'I20'
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I20opeps[1,0]={',I20op1eps(g,g,g,g,1,0,:)+I20op2eps(g,g,g,g,0,1,:)
-c$$$      write(6,*)                   
-c$$$      write(6,FMT3) 'I20opeps[0,1]={',I20op1eps(g,g,g,g,0,1,:)+I20op2eps(g,g,g,g,1,0,:)
-c$$$      write(6,*)                   
-c$$$      write(6,FMT3) 'I20opeps[0,0]={',I20op1eps(g,g,g,g,0,0,:)+I20op2eps(g,g,g,g,0,0,:)
-c$$$c      write(6,*) 'I20op1eps[0,0]=',I20op1eps(g,g,g,g,0,0,:)
-c$$$c      write(6,*) 'I20op2eps[0,0]=',I20op2eps(g,g,g,g,0,0,:)
-c$$$      write(6,*)                   
-c$$$      write(6,FMT3) 'I20opeps[1,1]={',I20op1eps(g,g,g,g,1,1,:)+I20op2eps(g,g,g,g,1,1,:)
-c$$$      write(6,*)                   
-c$$$      write(6,FMT3) 'I20opeps[1,2]={',I20op1eps(g,g,g,g,1,2,:)+I20op2eps(g,g,g,g,2,1,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I20opeps[2,1]={',I20op1eps(g,g,g,g,2,1,:)+I20op2eps(g,g,g,g,1,2,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I20opeps[2,2]={',I20op1eps(g,g,g,g,2,2,:)+I20op2eps(g,g,g,g,2,2,:)
-c$$$      write(6,*) 'in Iopmat'
-c$$$      pause
-
-
-
-c      goto 20
-
-      
+      call hp_fillIop2_2(g,g,g,g,k,tmp3)      
       
 c---  A12 Integrated counterterms
 
@@ -374,44 +309,6 @@ c---
 
       call hp_addscale2(k,tmp3,tmpba3,xl12)
       call hp_fillIop2_2(g,g,g,g,k,tmp3)
-
-
-c$$$      write(6,*) 'xa=',xa
-c$$$      write(6,*) 'xb=',xb
-c$$$      write(6,*)
-c$$$c      write(6,*) 'I10'
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I10opeps[1,1]={',I10op1eps(g,g,g,1,1,:)+I10op2eps(g,g,g,1,1,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I10opeps[1,2]={',I10op1eps(g,g,g,1,2,:)+I10op2eps(g,g,g,2,1,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I10opeps[2,1]={',I10op1eps(g,g,g,2,1,:)+I10op2eps(g,g,g,1,2,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I10opeps[2,2]={',I10op1eps(g,g,g,2,2,:)+I10op2eps(g,g,g,2,2,:)
-c$$$      write(6,*)
-c$$$      write(6,*)
-c$$$      write(6,*) 'I20'
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I20opeps[1,0]={',I20op1eps(g,g,g,g,1,0,:)+I20op2eps(g,g,g,g,0,1,:)
-c$$$      write(6,*)                   
-c$$$      write(6,FMT3) 'I20opeps[0,1]={',I20op1eps(g,g,g,g,0,1,:)+I20op2eps(g,g,g,g,1,0,:)
-c$$$      write(6,*)                   
-c$$$      write(6,FMT3) 'I20opeps[0,0]={',I20op1eps(g,g,g,g,0,0,:)+I20op2eps(g,g,g,g,0,0,:)
-c$$$c      write(6,*) 'I20op1eps[0,0]=',I20op1eps(g,g,g,g,0,0,:)
-c$$$c      write(6,*) 'I20op2eps[0,0]=',I20op2eps(g,g,g,g,0,0,:)
-c$$$      write(6,*)                   
-c$$$      write(6,FMT3) 'I20opeps[1,1]={',I20op1eps(g,g,g,g,1,1,:)+I20op2eps(g,g,g,g,1,1,:)
-c$$$      write(6,*)                   
-c$$$      write(6,FMT3) 'I20opeps[1,2]={',I20op1eps(g,g,g,g,1,2,:)+I20op2eps(g,g,g,g,2,1,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I20opeps[2,1]={',I20op1eps(g,g,g,g,2,1,:)+I20op2eps(g,g,g,g,1,2,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I20opeps[2,2]={',I20op1eps(g,g,g,g,2,2,:)+I20op2eps(g,g,g,g,2,2,:)
-c$$$      write(6,*) 'in Iopmat'
-c$$$      pause
-
-
-
       
 c---  RVA1 Integrated counterterms
 
@@ -446,8 +343,7 @@ c---
 
       call hp_addscale2(k,tmp3,tmpba3,xl12)
       call hp_fillIop2_2(g,g,g,g,k,tmp3)
-      
-      
+            
 c---  A1 Integrated counterterms
       
       call hp_a1ncar0gg(xa,xb,ABa1ncar0gg)
@@ -471,63 +367,7 @@ c      call hp_a1carsr0g(CA,xb,BAa1carsr0g)
 
       call hp_addscale1(tmp1,tmpba1,xl12)
       call hp_fillIop1_2(g,g,g,1,tmp1)
-      
-
-
-c      write(6,*) 'xa=',xa
-c      write(6,*) 'xb=',xb
-c      write(6,*)
-c      write(6,*)
-c      write(6,FMT3) 'I10op1eps[1,1]={',I10op1eps(g,g,g,1,1,:)+I10op2eps(g,g,g,1,1,:)
-c      write(6,*)
-c      write(6,FMT3) 'I10op1eps[1,2]={',I10op1eps(g,g,g,1,2,:)+I10op2eps(g,g,g,2,1,:)
-c      write(6,*)
-c      write(6,FMT3) 'I10op1eps[2,1]={',I10op1eps(g,g,g,2,1,:)+I10op2eps(g,g,g,1,2,:)
-c      write(6,*)
-c      write(6,FMT3) 'I10op1eps[2,2]={',I10op1eps(g,g,g,2,2,:)+I10op2eps(g,g,g,2,2,:)
-c      write(6,*)
-c      write(6,*)
-c      pause
-
-
-
-c$$$      write(6,*) 'xa=',xa
-c$$$      write(6,*) 'xb=',xb
-c$$$      write(6,*)
-c$$$c      write(6,*) 'I10'
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I10opeps[1,1]={',I10op1eps(g,g,g,1,1,:)+I10op2eps(g,g,g,1,1,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I10opeps[1,2]={',I10op1eps(g,g,g,1,2,:)+I10op2eps(g,g,g,2,1,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I10opeps[2,1]={',I10op1eps(g,g,g,2,1,:)+I10op2eps(g,g,g,1,2,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I10opeps[2,2]={',I10op1eps(g,g,g,2,2,:)+I10op2eps(g,g,g,2,2,:)
-c$$$      write(6,*)
-c$$$      write(6,*)
-c$$$      write(6,*) 'I20'
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I20opeps[1,0]={',I20op1eps(g,g,g,g,1,0,:)+I20op2eps(g,g,g,g,0,1,:)
-c$$$      write(6,*)                   
-c$$$      write(6,FMT3) 'I20opeps[0,1]={',I20op1eps(g,g,g,g,0,1,:)+I20op2eps(g,g,g,g,1,0,:)
-c$$$      write(6,*)                   
-c$$$      write(6,FMT3) 'I20opeps[0,0]={',I20op1eps(g,g,g,g,0,0,:)+I20op2eps(g,g,g,g,0,0,:)
-c$$$c      write(6,*) 'I20op1eps[0,0]=',I20op1eps(g,g,g,g,0,0,:)
-c$$$c      write(6,*) 'I20op2eps[0,0]=',I20op2eps(g,g,g,g,0,0,:)
-c$$$      write(6,*)                   
-c$$$      write(6,FMT3) 'I20opeps[1,1]={',I20op1eps(g,g,g,g,1,1,:)+I20op2eps(g,g,g,g,1,1,:)
-c$$$      write(6,*)                   
-c$$$      write(6,FMT3) 'I20opeps[1,2]={',I20op1eps(g,g,g,g,1,2,:)+I20op2eps(g,g,g,g,2,1,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I20opeps[2,1]={',I20op1eps(g,g,g,g,2,1,:)+I20op2eps(g,g,g,g,1,2,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I20opeps[2,2]={',I20op1eps(g,g,g,g,2,2,:)+I20op2eps(g,g,g,g,2,2,:)
-c$$$      write(6,*) 'in Iopmat'
-c$$$      pause
-
-
-
-      
+            
 c--- Renormalization of the I2
 
       tmpab1=-tmpab1*b0
@@ -538,43 +378,7 @@ c--- Renormalization of the I2
 
       call hp_addscale3(tmp2,tmpba1,-xl12)
       call hp_fillIop2_2(g,g,g,g,1,tmp2)
-
-
-c$$$      write(6,*) 'xa=',xa
-c$$$      write(6,*) 'xb=',xb
-c$$$      write(6,*)
-c$$$c      write(6,*) 'I10'
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I10opeps[1,1]={',I10op1eps(g,g,g,1,1,:)+I10op2eps(g,g,g,1,1,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I10opeps[1,2]={',I10op1eps(g,g,g,1,2,:)+I10op2eps(g,g,g,2,1,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I10opeps[2,1]={',I10op1eps(g,g,g,2,1,:)+I10op2eps(g,g,g,1,2,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I10opeps[2,2]={',I10op1eps(g,g,g,2,2,:)+I10op2eps(g,g,g,2,2,:)
-c$$$      write(6,*)
-c$$$      write(6,*)
-c$$$      write(6,*) 'I20'
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I20opeps[1,0]={',I20op1eps(g,g,g,g,1,0,:)+I20op2eps(g,g,g,g,0,1,:)
-c$$$      write(6,*)                   
-c$$$      write(6,FMT3) 'I20opeps[0,1]={',I20op1eps(g,g,g,g,0,1,:)+I20op2eps(g,g,g,g,1,0,:)
-c$$$      write(6,*)                   
-c$$$      write(6,FMT3) 'I20opeps[0,0]={',I20op1eps(g,g,g,g,0,0,:)+I20op2eps(g,g,g,g,0,0,:)
-c$$$c      write(6,*) 'I20op1eps[0,0]=',I20op1eps(g,g,g,g,0,0,:)
-c$$$c      write(6,*) 'I20op2eps[0,0]=',I20op2eps(g,g,g,g,0,0,:)
-c$$$      write(6,*)                   
-c$$$      write(6,FMT3) 'I20opeps[1,1]={',I20op1eps(g,g,g,g,1,1,:)+I20op2eps(g,g,g,g,1,1,:)
-c$$$      write(6,*)                   
-c$$$      write(6,FMT3) 'I20opeps[1,2]={',I20op1eps(g,g,g,g,1,2,:)+I20op2eps(g,g,g,g,2,1,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I20opeps[2,1]={',I20op1eps(g,g,g,g,2,1,:)+I20op2eps(g,g,g,g,1,2,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I20opeps[2,2]={',I20op1eps(g,g,g,g,2,2,:)+I20op2eps(g,g,g,g,2,2,:)
-c$$$      write(6,*) 'in Iopmat'
-c$$$      pause
-
-      
+ 
 c---  C1A1 Integrated counterterms
       
       call hp_a1c1cargggg(xa,xb,ABa1c1cargggg)
@@ -594,42 +398,6 @@ c---  xlfs=Log[Q^2/muF^2]
       call hp_addscale3(tmp,tmpba1,xlfs)
       call hp_addscale2(1,tmp2,tmp,xl12)
       call hp_fillIop2_2(g,g,g,g,1,tmp2)
-
-
-c$$$      write(6,*) 'xa=',xa
-c$$$      write(6,*) 'xb=',xb
-c$$$      write(6,*)
-c$$$c      write(6,*) 'I10'
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I10opeps[1,1]={',I10op1eps(g,g,g,1,1,:)+I10op2eps(g,g,g,1,1,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I10opeps[1,2]={',I10op1eps(g,g,g,1,2,:)+I10op2eps(g,g,g,2,1,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I10opeps[2,1]={',I10op1eps(g,g,g,2,1,:)+I10op2eps(g,g,g,1,2,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I10opeps[2,2]={',I10op1eps(g,g,g,2,2,:)+I10op2eps(g,g,g,2,2,:)
-c$$$      write(6,*)
-c$$$      write(6,*)
-c$$$      write(6,*) 'I20'
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I20opeps[1,0]={',I20op1eps(g,g,g,g,1,0,:)+I20op2eps(g,g,g,g,0,1,:)
-c$$$      write(6,*)                   
-c$$$      write(6,FMT3) 'I20opeps[0,1]={',I20op1eps(g,g,g,g,0,1,:)+I20op2eps(g,g,g,g,1,0,:)
-c$$$      write(6,*)                   
-c$$$      write(6,FMT3) 'I20opeps[0,0]={',I20op1eps(g,g,g,g,0,0,:)+I20op2eps(g,g,g,g,0,0,:)
-c$$$c      write(6,*) 'I20op1eps[0,0]=',I20op1eps(g,g,g,g,0,0,:)
-c$$$c      write(6,*) 'I20op2eps[0,0]=',I20op2eps(g,g,g,g,0,0,:)
-c$$$      write(6,*)                   
-c$$$      write(6,FMT3) 'I20opeps[1,1]={',I20op1eps(g,g,g,g,1,1,:)+I20op2eps(g,g,g,g,1,1,:)
-c$$$      write(6,*)                   
-c$$$      write(6,FMT3) 'I20opeps[1,2]={',I20op1eps(g,g,g,g,1,2,:)+I20op2eps(g,g,g,g,2,1,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I20opeps[2,1]={',I20op1eps(g,g,g,g,2,1,:)+I20op2eps(g,g,g,g,1,2,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I20opeps[2,2]={',I20op1eps(g,g,g,g,2,2,:)+I20op2eps(g,g,g,g,2,2,:)
-c$$$      write(6,*) 'in Iopmat'
-c$$$      pause
-
       
 c--- AP C2 terms      
 
@@ -754,51 +522,6 @@ c     scale dependence (muR2/muF2)^(2 ep) and the 1/(eps^2) pole
       call hp_addscale2c(tmp2,tempfcn,xlrf,2,2)
 c     Accumulate the I20 operator which will be multiplied by the Born ME
       call hp_fillIop2_2(g,g,g,g,1,tmp2)
-
-
-
-      
-c$$$      write(6,*) 'xa=',xa
-c$$$      write(6,*) 'xb=',xb
-c$$$      write(6,*)
-c$$$      write(6,*) 'I10'
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I10opeps[1,1]={',I10op1eps(g,g,g,1,1,:)+I10op2eps(g,g,g,1,1,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I10opeps[1,2]={',I10op1eps(g,g,g,1,2,:)+I10op2eps(g,g,g,2,1,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I10opeps[2,1]={',I10op1eps(g,g,g,2,1,:)+I10op2eps(g,g,g,1,2,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I10opeps[2,2]={',I10op1eps(g,g,g,2,2,:)+I10op2eps(g,g,g,2,2,:)
-c$$$      write(6,*)
-c$$$      write(6,*)
-c$$$      write(6,*) 'I20'
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I20opeps[1,0]={',I20op1eps(g,g,g,g,1,0,:)+I20op2eps(g,g,g,g,0,1,:)
-c$$$      write(6,*)                   
-c$$$      write(6,FMT3) 'I20opeps[0,1]={',I20op1eps(g,g,g,g,0,1,:)+I20op2eps(g,g,g,g,1,0,:)
-c$$$      write(6,*)                   
-c$$$      write(6,FMT3) 'I20opeps[0,0]={',I20op1eps(g,g,g,g,0,0,:)+I20op2eps(g,g,g,g,0,0,:)
-c$$$      write(6,*) 'I20op1eps[0,0]=',I20op1eps(g,g,g,g,0,0,:)
-c$$$      write(6,*) 'I20op2eps[0,0]=',I20op2eps(g,g,g,g,0,0,:)
-c$$$      write(6,*)                   
-c$$$      write(6,FMT3) 'I20opeps[1,1]={',I20op1eps(g,g,g,g,1,1,:)+I20op2eps(g,g,g,g,1,1,:)
-c$$$      write(6,*)                   
-c$$$      write(6,FMT3) 'I20opeps[1,2]={',I20op1eps(g,g,g,g,1,2,:)+I20op2eps(g,g,g,g,2,1,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I20opeps[2,1]={',I20op1eps(g,g,g,g,2,1,:)+I20op2eps(g,g,g,g,1,2,:)
-c$$$      write(6,*)
-c$$$      write(6,FMT3) 'I20opeps[2,2]={',I20op1eps(g,g,g,g,2,2,:)+I20op2eps(g,g,g,g,2,2,:)
-c$$$      pause
-
-c 20   continue
-      
-      I20op1eps(:,:,:,:,:,:,:)=I20op1eps(:,:,:,:,:,:,:)!*ason2piprec2
-      I20op2eps(:,:,:,:,:,:,:)=I20op2eps(:,:,:,:,:,:,:)!*ason2piprec2
-
-      I10op1eps(:,:,:,:,:,:)=I10op1eps(:,:,:,:,:,:)!*ason2piprec
-      I10op2eps(:,:,:,:,:,:)=I10op2eps(:,:,:,:,:,:)!*ason2piprec
-
       
       return
       end
@@ -807,10 +530,6 @@ c 20   continue
       implicit none
       include 'hp_types.h'
       include 'hp_Ioperators2.f'
-c      real(ki) 
-c     1     I20op1eps(-1:1,-1:1,-1:1,-1:1,0:2,0:2,-4:0),
-c     2     I20op2eps(-1:1,-1:1,-1:1,-1:1,0:2,0:2,-4:0)
-c      common/I20opeps/I20op1eps,I20op2eps
       integer a,b,c,d,i,j,k,eps
       real(ki) Iopin(i:2,i:2,-4:0)
       do j=i,2
@@ -829,10 +548,6 @@ c      common/I20opeps/I20op1eps,I20op2eps
       implicit none
       include 'hp_types.h'
       include 'hp_Ioperators2.f'
-c      real(ki) 
-c     1     I20op1eps(-1:1,-1:1,-1:1,-1:1,0:2,0:2,-4:0),
-c     2     I20op2eps(-1:1,-1:1,-1:1,-1:1,0:2,0:2,-4:0)
-c      common/I20opeps/I20op1eps,I20op2eps
       integer a,b,c,d,i,j,k,eps
       real(ki) Iopin(i:2,i:2,-4:0)
       do j=i,2
@@ -851,10 +566,6 @@ c      common/I20opeps/I20op1eps,I20op2eps
       implicit none
       include 'hp_types.h'
       include 'hp_Ioperators2.f'
-c      real(ki) 
-c     1     I10op1eps(-1:1,-1:1,-1:1,2,2,-2:2),
-c     2     I10op2eps(-1:1,-1:1,-1:1,2,2,-2:2)
-c      common/I10opeps/I10op1eps,I10op2eps
       integer a,b,c,i,j,k,eps
       real(ki) Iopin(i:2,i:2,-2:2)
       do j=i,2
@@ -873,10 +584,6 @@ c      common/I10opeps/I10op1eps,I10op2eps
       implicit none
       include 'hp_types.h'
       include 'hp_Ioperators2.f'
-c      real(ki) 
-c     1     I10op1eps(-1:1,-1:1,-1:1,2,2,-2:2),
-c     2     I10op2eps(-1:1,-1:1,-1:1,2,2,-2:2)
-c      common/I10opeps/I10op1eps,I10op2eps
       integer a,b,c,i,j,k,eps
       real(ki) Iopin(i:2,i:2,-2:2)
       do j=i,2
@@ -1033,5 +740,3 @@ c      common/I10opeps/I10op1eps,I10op2eps
       enddo
       return
       end
-      
-      

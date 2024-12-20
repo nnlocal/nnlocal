@@ -31,7 +31,9 @@ c      common/mypart/mypart
 
 c--- set up the beta-function
       b0=(xn*11d0-2d0*nflav)/6d0
-      write(6,*)'!!!!! RECALL nflav set to 0 in b0 !!!!!'
+      write(6,*)'*******************************************'
+      write(6,*)'*     No light quarks: nflav set to 0     *'
+      write(6,*)'*******************************************'
       b0=(xn*11d0)/6d0
 
 c--- initialize the pdf set

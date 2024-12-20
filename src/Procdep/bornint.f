@@ -78,9 +78,7 @@
      1     res(-1:1,-1:1,-1:1,-1:1,0:2,0:2,-4:0),
      1   resab(-1:1,-1:1,-1:1,-1:1,0:2,0:2,-4:0),
      1   resba(-1:1,-1:1,-1:1,-1:1,0:2,0:2,-4:0)
-      character *37 FMT1,FMT2
-      character *60 FMT3
-      integer myexp,myshot,origord
+      integer myexp,myshot
       save myshot
       logical keepterm1, keepterm2
       double precision tiny,tin2
@@ -141,10 +139,6 @@ c--- bother calculating the matrix elements for it, instead bail out
       t=0.51231d0
       xjac=1d0
       if (order.gt.0) then
-c         if (case.eq.'H_tota') then
-c            z=r(2)
-c            xjac=1d0
-c         else
             z=r(ndim-1)**2
             t=r(ndim)**2
             if (nshot .eq. 1) then
@@ -152,7 +146,6 @@ c         else
                t=0.51231d0
             endif
             xjac=four*dsqrt(z*t)
-c         endif
       endif
 
       if (check) myexp=1
@@ -160,10 +153,8 @@ c         endif
  101  continue
       
       if (check) then
-c         t=1-0.6d0
          t=1-0.12d0**myexp
          z=1-0.1d0**myexp
-c         t=1-0.11d0**myexp
          
       endif
 
@@ -183,7 +174,6 @@ c--- correction to epinv from AP subtraction when mu_FAC != mu_REN,
 c--- corresponding to subtracting -1/epinv*Pab*log(musq_REN/musq_FAC)
       epcorr=epinv+2d0*dlog(scale/facscale)
       
-c--- debug: note that we still have to cancel the sing. of integrated A1
       if (order.eq.0) then
          APz(g,g,:)=0d0
          APt(g,g,:)=0d0
@@ -196,28 +186,12 @@ c--- debug: note that we still have to cancel the sing. of integrated A1
          APt(g,g,1)=+ason2pi*b0*epcorr
          APt(g,g,2)=+ason2pi*xn*2d0*(1d0/t+t*omt-2d0)*epcorr
          APt(g,g,3)=+ason2pi*xn*2d0/omt*epcorr
-
-c---  DEBUG: return ep^(-2) part
-c         APz(g,g,:)=0d0
-c         APt(g,g,:)=0d0   
-c---  END DEBUG
-c---  DEBUG: return ep^(-1) part
-c         epcorr=1d0
-c               
-c         APz(g,g,1)=+ason2pi*b0*epcorr
-c         APz(g,g,2)=+ason2pi*xn*2d0*(1d0/z+z*omz-2d0)*epcorr
-c         APz(g,g,3)=+ason2pi*xn*2d0/omz*epcorr
-c         
-c         APt(g,g,1)=+ason2pi*b0*epcorr
-c         APt(g,g,2)=+ason2pi*xn*2d0*(1d0/t+t*omt-2d0)*epcorr
-c         APt(g,g,3)=+ason2pi*xn*2d0/omt*epcorr
-c---  END DEBUG
          
       endif
             
       I10op1(:,:,:,:,:)=0d0
       I10op2(:,:,:,:,:)=0d0
-
+      
       
 c--- Calculate the required matrix elements      
       if (case .eq. 'H_gaga') then
@@ -264,27 +238,12 @@ c--- Calculate the required matrix elements
                call BuildICT(p,tmp1,tmp2,resba,0d0,1d0)
             else
                call hp_iopmat2(p,z,t)
-c     write(6,*) resab(0,0,0,0,1,1,-1)
-c     1             +resba(0,0,0,0,1,1,-1) +tmp2(g,g,-1)
                call hp_BuildICT(p,tmp1,tmp2,resab,1d0,0d0)
                call hp_BuildICT(p,tmp1,tmp2,resba,0d0,1d0)
-c     write(6,*) 'lp'
-c     write(6,*) resab(0,0,0,0,2,2,-1)
-c     1                  +resba(0,0,0,0,2,2,-1)
-c     write(6,*) resab(0,0,0,0,2,2,0)
-c     1                  +resba(0,0,0,0,2,2,0)
-c     write(6,*) 
             endif
             
-c     write(6,*)
-c     FMT1="('msqv1={',4(F23.17,','),F23.17,'};')"
-c     FMT2="('msqv2={',4(F23.17,','),F23.17,'};')"
-c     write(6,FMT1) tmp1(0,0,:)
-c     write(6,FMT2) tmp2(0,0,:)
-            
  555        continue
-            
-            
+                        
             if (check) then
                if (z .gt. xx(1)) then
                   x1onz=xx(1)/z
@@ -334,23 +293,7 @@ c     write(6,FMT2) tmp2(0,0,:)
          endif
          
       elseif (case .eq. 'H_tota') then
-         origord=order
-c---  cut to simulate loss of cross section
-c         if (order.gt.1) then
-c            if (
-c     1           z.lt.tiny.or.
-c     2           t.lt.tiny.or.
-c     3           z.gt.(1d0-tiny/100d0).or.
-c     4           t.gt.(1d0-tiny/100d0).or.
-c     5           abs(9d0*z-t).lt.4*tiny.or.
-c     6           abs(9d0*t-z).lt.4*tiny.or.
-c     7           abs(z-t).lt.4*tiny
-c     8           ) then
-c               order=1
-c            endif
-c         endif
          call gg_htot(z,msqtot)
-c         order=origord
       endif
 
 
@@ -453,10 +396,7 @@ c---  calculate PDF's
             if (omitgg) then 
                if ((j.eq.0) .and. (k.eq.0)) goto 20
             endif
-            
-
-
-      
+                  
 c--- SUM BY TOTAL MATRIX ELEMENTS: everything else
             if     ((j .gt. 0) .and. (k.gt.0)) then
                
@@ -503,10 +443,6 @@ c--- SUM BY TOTAL MATRIX ELEMENTS: everything else
                endif
             endif
       
-c     if (purevirt_cf_new) then
-c     ymsq=ymsq-msq(j,k)*fx1(j)*fx2(k)
-c     endif  
-      
             if     (j .gt. 0) then
                sgnj=+1
             elseif (j .lt. 0) then
@@ -528,8 +464,7 @@ c     endif
             if (currentPDF .eq. 0) then
                xmsq_bypart(0,sgnj,sgnk)=xmsq_bypart(0,sgnj,sgnk)+ymsq
             endif
-            
-      
+                  
  20         continue
 
          enddo
@@ -576,14 +511,9 @@ c--- code to check that epsilon poles cancel
                write(6,*) 'epsilon fails to cancel'
                write(6,*) 'xmsq (epinv=large) = ',xmsq_old
                write(6,*) 'xmsq (epinv=zero ) = ',xmsq(0)
-c     stop
             else
                write(6,*) 'Poles cancelled!'
-c     write(6,*) 'xmsq (epinv=large) = ',xmsq_old
-c     write(6,*) 'xmsq (epinv=zero ) = ',xmsq
-c     pause
-            endif
-            
+            endif            
          endif
       endif
 
@@ -627,8 +557,6 @@ c---check whether each counter-event passes the cuts
           xmsq(nd)=0d0
           goto 997         
         endif
-
-
         
         xint=xint+xmsq(nd)*reweight        
            
@@ -644,7 +572,7 @@ c---check whether each counter-event passes the cuts
 
         valsum = valsum + val
 
-
+        
 c--- update PDF errors
         if (PDFerrors) then
           do currentPDF=0,maxPDFsets        
@@ -694,7 +622,6 @@ c--- update the maximum weight so far, if necessary
       
       return
       end
-
 
 
 
@@ -806,5 +733,4 @@ c--- update the maximum weight so far, if necessary
       enddo           
       return
       end
-      
-      
+

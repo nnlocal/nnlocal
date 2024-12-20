@@ -15,11 +15,7 @@
       double precision xa,xb
       double precision resab(2,2,-2:2),resba(2,2,-2:2)
 
-      character *60 FMT3
       integer eps
-      
-      FMT3="(A20,4(F30.17,','),F30.16,'};')"
-
       
       xl12=dlog(two*dot(p,1,2)/musq)
       call  a1ncar0gg_loprec(xa,xb,resab)
@@ -36,21 +32,7 @@
      2   +resba(i,j,-1)*(epinv-xl12)
      3   +resba(i,j, 0))
          enddo
-      enddo
-
-c      write(6,*) ason2pi
-c      do i=1,2
-c         do j=1,2
-c            write(6,*) 'i=',i, 'j=',j
-c            write(6,*) resab(i,j,-2),resab(i,j,-1),resab(i,j,0)
-c            write(6,*) resba(i,j,-2),resba(i,j,-1),resba(i,j,0)
-c            write(6,*)
-c         enddo
-c      enddo
-      
+      enddo      
       
       return
       end
-
-      
-      
