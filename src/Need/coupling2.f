@@ -4,17 +4,13 @@ c--- value of nflav and makes CKM matrix diagonal if necessary
       implicit none
       include 'constants.f'
       include 'masses.f'
-c      include 'ewcouple.f'
       include 'qcdcouple.f'
       include 'scale.f'
       include 'verbose.f'
       include 'nlooprun.f'
-c      include 'process.f'
-c      include 'ewinput.f'
       include 'nflav.f'
       include 'b0.f'
       include 'dynamicscale.f'
-      include 'stopscales.f'
       include 'fourthgen.f'
       include 'couple.f'
       include 'part.f'
@@ -25,8 +21,6 @@ c      include 'ewinput.f'
       common/cabib/Vud,Vus,Vub,
      &             Vcd,Vcs,Vcb
       common/qmass/cmass,bmass
-c      common/em/aemmz
-c      common/mypart/mypart
       common/nproc/nproc
 
 c--- set up the beta-function
@@ -75,18 +69,6 @@ c--- initialize alpha_s
       ason4pi=as/fourpi
       gsq=fourpi*as
 
-c--- if we're doing W + jets, automatically make the CKM matrix
-c--- diagonal since we're not interested in these small effects   
-      if ((nproc .eq. 11) .or. (nproc .eq. 16) .or.
-     .    (nproc .eq. 22) .or. (nproc .eq. 27)) then
-        Vud=1d0
-        Vus=0d0
-        Vub=0d0
-        Vcd=0d0
-        Vcs=1d0
-        Vcb=0d0
-      endif
-
       if (verbose) then
       write(6,*)
       write(6,*) '***************** CKM mixing matrix ****************'
@@ -94,27 +76,9 @@ c--- diagonal since we're not interested in these small effects
       write(6,47) Vud,Vus,Vub
       write(6,48) Vcd,Vcs,Vcb
       write(6,*) '****************************************************'
-      if ((nproc .eq. 11) .or. (nproc .eq. 16) .or.
-     .    (nproc .eq. 22) .or. (nproc .eq. 27)) then
-      write(6,*) '* Forced to be diagonal for simplicity in W + jets *'
-      write(6,*) '****************************************************'
-      endif
  47   format(' *      Vud=',g10.5,'Vus=',g10.5,'Vub=',g10.5,'  *')
  48   format(' *      Vcd=',g10.5,'Vcs=',g10.5,'Vcb=',g10.5,'  *')
       endif      
-
-c--- special write-out for stop+b case
-      if ((verbose) .and. (initrenscale_L .gt. 0d0)) then
-      write(6,*)
-      write(6,*) '************* Strong coupling, alpha_s  ************'
-      write(6,*) '*                                                  *'
-      write(6,49) 'alpha_s (zmass)    ',amz
-      write(6,49) 'alpha_s (hvy scale)',as_H
-      write(6,49) 'alpha_s (lgt scale)',as_L
-      write(6,50) ' (using ',nlooprun,'-loop running of alpha_s)'  
-      write(6,*) '****************************************************'
-      return
-      endif
 
       if ((verbose) .and. (scale .gt. 0d0)) then      
       write(6,*)

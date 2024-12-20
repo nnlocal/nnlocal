@@ -21,32 +21,18 @@ c--- by the strings 'lstring' and 'rstring'
       include 'pdlabel.f'
       include 'removebr.f'
       include 'dynamicscale.f'
-      include 'stopscales.f'
-      include 'vanillafiles.f'
-      include 'alfacut.f'
-      include 'betacut.f'
       include 'verbose.f'
       include 'debug.f'
-      include 'new_pspace.f'
       include 'virtonly.f'
       include 'realonly.f'
       include 'noglue.f'
       include 'realwt.f'
-      include 'lc.f'
       include 'cutoff.f'
-      include 'frag.f'
       include 'initialscales.f'
       include 'outputoptions.f'
       include 'outputflags.f'
       include 'part.f'
-      include 'anomHiggs.f'
-      include 'anom_higgs.f'
-      include 'vdecayid.f'
       include 'runstring.f'
-c--- APPLgrid - flag using grid
-      include 'ptilde.f'
-      include 'APPLinclude.f'
-c--- APPLgrid - end
       character*(*) tag,lstring,rstring
       character*72 f94,f95,f96,f97,f98,f99
       logical dryrun,makecuts,writeall,spira
@@ -97,53 +83,16 @@ c--- f99 floating point format
       write(unitno,*) lstring//' Run corresponds to this input file)'
       write(unitno,*)
       write(unitno,*)
-     . lstring//' [Flags to specify the mode in which MCFM is run] )'
+     . lstring//' [Flags to specify the mode in which NNLOCAL is run] )'
       endif
       
-      if ((tag .eq. 'nevtrequested') .or. (writeall)) then
-      write(unitno,fmt=f97) nevtrequested,'nevtrequested'
-      endif
-      if ((tag .eq. 'creatent') .or. (writeall)) then
-      write(unitno,fmt=f98) creatent,'creatent'
-      endif
-      if ((tag .eq. 'skipnt') .or. (writeall)) then
-      write(unitno,fmt=f98) skipnt,'skipnt'
-      endif
-      if ((tag .eq. 'dswhisto') .or. (writeall)) then
-      write(unitno,fmt=f98) dswhisto,'dswhisto'
-      endif
-      if ((tag .eq. 'creategrid') .or. (writeall)) then
-      write(unitno,fmt=f98) creategrid,'creategrid'
-      endif
-      if ((tag .eq. 'writetop') .or. (writeall)) then
-      write(unitno,fmt=f98) writetop,'writetop'
-      endif
-      if ((tag .eq. 'writedat') .or. (writeall)) then
-      write(unitno,fmt=f98) writedat,'writedat'
-      endif
-      if ((tag .eq. 'writegnu') .or. (writeall)) then
-      write(unitno,fmt=f98) writegnu,'writegnu'
-      endif
-      if ((tag .eq. 'writeroot') .or. (writeall)) then
-      write(unitno,fmt=f98) writeroot,'writeroot'
-      endif
-      if ((tag .eq. 'writepwg') .or. (writeall)) then
-      write(unitno,fmt=f98) writepwg,'writepwg'
-      endif
-
       if (writeall) then
       write(unitno,*)
       write(unitno,*) lstring//
      & ' [General options to specify the process and execution] )'
       endif
-      if (vdecayid) then
-        if ((tag .eq. 'nproc') .or. (writeall)) then
-        write(unitno,fmt=f94) nproc,v34id,v56id,'nproc'
-        endif
-      else
-        if ((tag .eq. 'nproc') .or. (writeall)) then
-        write(unitno,fmt=f97) nproc,'nproc'
-        endif
+      if ((tag .eq. 'nproc') .or. (writeall)) then
+         write(unitno,fmt=f97) nproc,'nproc'
       endif
       if ((tag .eq. 'order') .or. (writeall)) then
       write(unitno,fmt=f97) order,'order'
@@ -166,31 +115,12 @@ c--- f99 floating point format
       if ((tag .eq. 'hmass') .or. (writeall)) then
       write(unitno,fmt=f99) hmass,'hmass'
       endif
-
-c--- catch special scale choices for stop+b process
-      if ((nproc .ge. 231) .and. (nproc .le. 240)) then
-         if ((tag .eq. 'renscale_L') .or. (writeall)) then
-         write(unitno,fmt=f99) renscale_L,'renscale_L'
-         endif
-         if ((tag .eq. 'facscale_L') .or. (writeall)) then
-         write(unitno,fmt=f99) facscale_L,'facscale_L'
-         endif
-         if ((tag .eq. 'renscale_H') .or. (writeall)) then
-         write(unitno,fmt=f99) renscale_H,'renscale_H'
-         endif
-         if ((tag .eq. 'facscale_H') .or. (writeall)) then
-         write(unitno,fmt=f99) facscale_H,'facscale_H'
-         endif
-      else
-         if ((tag .eq. 'scale') .or. (writeall)) then
+      if ((tag .eq. 'scale') .or. (writeall)) then
          write(unitno,fmt=f99) initscale,'scale'
-         endif
-         if ((tag .eq. 'facscale') .or. (writeall)) then
-         write(unitno,fmt=f99) initfacscale,'facscale'
-         endif
       endif
-
-
+      if ((tag .eq. 'facscale') .or. (writeall)) then
+         write(unitno,fmt=f99) initfacscale,'facscale'
+      endif
       if ((tag .eq. 'dynamicscale') .or. writeall) then
       write(unitno,fmt=f96) dynstring,'dynamicscale'
       endif
@@ -218,13 +148,6 @@ c--- catch special scale choices for stop+b process
       if ((tag .eq. 'dryrun') .or. (writeall)) then
       write(unitno,fmt=f98) dryrun,'dryrun'
       endif
-      if ((tag .eq. 'Qflag') .or. (writeall)) then
-      write(unitno,fmt=f98) Qflag,'Qflag'
-      endif
-      if ((tag .eq. 'Gflag') .or. (writeall)) then
-      write(unitno,fmt=f98) Gflag,'Gflag'
-      endif
-      
       if (writeall) then
       write(unitno,*)
       write(unitno,*) 
@@ -244,15 +167,6 @@ c--- catch special scale choices for stop+b process
       write(unitno,*)
       write(unitno,*) 
      . lstring//' [Pdf selection] )'
-      endif
-      if ((tag .eq. 'pdlabel') .or. (writeall)) then
-      write(unitno,fmt=f96) pdlabel,'pdlabel'
-      endif
-      if ((tag .eq. 'NGROUP') .or. (writeall)) then
-      write(unitno,fmt=f97) NGROUP,'NGROUP'
-      endif
-      if ((tag .eq. 'NSET') .or. (writeall)) then
-      write(unitno,fmt=f97) NSET,'NSET'
       endif
       if ((tag .eq. 'LHAPDF group') .or. (writeall)) then
       write(unitno,fmt=f96) PDFname,'LHAPDF group'
@@ -347,106 +261,6 @@ c--- catch special scale choices for stop+b process
 
       if (writeall) then
       write(unitno,*)
-      write(unitno,*)
-     . lstring//' [Settings for photon processes] )'
-      endif
-      if ((tag .eq. 'frag') .or. (writeall)) then
-      write(unitno,fmt=f98) frag,'frag'
-      endif
-      if ((tag .eq. 'fragset') .or. (writeall)) then
-      write(unitno,fmt=f96) fragset,'fragset'
-      endif
-      if ((tag .eq. 'frag_scale') .or. (writeall)) then
-      write(unitno,fmt=f99) frag_scale,'frag_scale'
-      endif
-      if ((tag .eq. 'gammpt') .or. (writeall)) then
-      write(unitno,fmt=f99) gammpt,'gammpt'
-      endif
-      if ((tag .eq. 'gammrap') .or. (writeall)) then
-      write(unitno,fmt=f99) gammrap,'gammrap'
-      endif
-      if ((tag .eq. 'gammpt2') .or. (writeall)) then
-      write(unitno,fmt=f99) gammpt2,'gammpt2'
-      endif
-      if ((tag .eq. 'gammpt3') .or. (writeall)) then
-      write(unitno,fmt=f99) gammpt2,'gammpt3'
-      endif
-      if ((tag .eq. 'Rgalmin') .or. (writeall)) then
-      write(unitno,fmt=f99) Rgalmin,'Rgalmin'
-      endif
-      if ((tag .eq. 'Rgagamin') .or. (writeall)) then
-      write(unitno,fmt=f99) Rgagamin,'Rgagamin'
-      endif
-      if ((tag .eq. 'Rgajetmin') .or. (writeall)) then
-      write(unitno,fmt=f99) Rgajetmin,'Rgajetmin'
-      endif
-      if ((tag .eq. 'cone_ang') .or. (writeall)) then
-      write(unitno,fmt=f99) cone_ang,'cone_ang'
-      endif
-      if ((tag .eq. 'epsilon_h') .or. (writeall)) then
-      write(unitno,fmt=f99) epsilon_h,'epsilon_h'
-      endif
-
-      if (writeall) then
-      write(unitno,*)
-      write(unitno,*)
-     . lstring//' [Anomalous couplings of the W and Z] )'
-      endif
-      if ((tag .eq. 'delg1_z') .or. (writeall)) then
-      write(unitno,fmt=f99) delg1_z,'delg1_z'
-      endif
-      if ((tag .eq. 'delk_z') .or. (writeall)) then
-      write(unitno,fmt=f99) delk_z,'delk_z'
-      endif
-      if ((tag .eq. 'delk_g') .or. (writeall)) then
-      write(unitno,fmt=f99) delk_g,'delk_g'
-      endif
-      if ((tag .eq. 'lambda_z') .or. (writeall)) then
-      write(unitno,fmt=f99) lambda_z,'lambda_z'
-      endif
-      if ((tag .eq. 'lambda_g') .or. (writeall)) then
-      write(unitno,fmt=f99) lambda_g,'lambda_g'
-      endif
-      if ((tag .eq. 'h1Z') .or. (writeall)) then
-      write(unitno,fmt=f99) h1Z,'h1Z'
-      endif
-      if ((tag .eq. 'h1gam') .or. (writeall)) then
-      write(unitno,fmt=f99) h1gam,'h1gam'
-      endif
-      if ((tag .eq. 'h2Z') .or. (writeall)) then
-      write(unitno,fmt=f99) h2Z,'h2Z'
-      endif
-      if ((tag .eq. 'h2gam') .or. (writeall)) then
-      write(unitno,fmt=f99) h2gam,'h2gam'
-      endif
-      if ((tag .eq. 'h3Z') .or. (writeall)) then
-      write(unitno,fmt=f99) h3Z,'h3Z'
-      endif
-      if ((tag .eq. 'h3gam') .or. (writeall)) then
-      write(unitno,fmt=f99) h3gam,'h3gam'
-      endif
-      if ((tag .eq. 'h4Z') .or. (writeall)) then
-      write(unitno,fmt=f99) h4Z,'h4Z'
-      endif
-      if ((tag .eq. 'h4gam') .or. (writeall)) then
-      write(unitno,fmt=f99) h4gam,'h4gam'
-      endif
-      if ((tag .eq. 'tevscale') .or. (writeall)) then
-      write(unitno,fmt=f99) tevscale,'tevscale'
-      endif
-      if ((tag .eq. 'cttH') .or. (writeall)) then
-      write(unitno,fmt=f99) cttH,'cttH'
-      endif
-      if ((tag .eq. 'cWWH') .or. (writeall)) then
-      write(unitno,fmt=f99) cWWH,'cWWH'
-      endif
-      if ((tag .eq. 'hwidth_ratio') .or. (writeall)) then
-      write(unitno,fmt=f99) hwidth_ratio,'Gamma_H/Gamma_H(SM)'
-      endif
-      
-
-      if (writeall) then
-      write(unitno,*)
       write(unitno,*) 
      . lstring//' [How to resume/save a run] )'
       endif
@@ -455,12 +269,6 @@ c--- catch special scale choices for stop+b process
       endif
       if ((tag .eq. 'writeout') .or. (writeall)) then
       write(unitno,fmt=f98) writeout,'writeout'
-      endif
-      if ((tag .eq. 'ingridfile') .or. (writeall)) then
-      write(unitno,fmt=f96) ingridfile,'ingridfile'
-      endif
-      if ((tag .eq. 'outgridfile') .or. (writeall)) then
-      write(unitno,fmt=f96) outgridfile,'outgridfile'
       endif
 
       if (writeall) then
@@ -473,9 +281,6 @@ c--- catch special scale choices for stop+b process
       endif
       if ((tag .eq. 'verbose') .or. (writeall)) then
       write(unitno,fmt=f98) verbose,'verbose'
-      endif
-      if ((tag .eq. 'new_pspace') .or. (writeall)) then
-      write(unitno,fmt=f98) new_pspace,'new_pspace'
       endif
       if ((tag .eq. 'virtonly') .or. (writeall)) then
       write(unitno,fmt=f98) virtonly,'virtonly'
@@ -498,9 +303,6 @@ c--- catch special scale choices for stop+b process
       if ((tag .eq. 'omitgg') .or. (writeall)) then
       write(unitno,fmt=f98) omitgg,'omitgg'
       endif
-      if ((tag .eq. 'vanillafiles') .or. (writeall)) then
-      write(unitno,fmt=f98) vanillafiles,'vanillafiles'
-      endif
       if ((tag .eq. 'nmin') .or. (writeall)) then
       write(unitno,fmt=f97) nmin,'nmin'
       endif
@@ -513,32 +315,11 @@ c--- catch special scale choices for stop+b process
       if ((tag .eq. 'realwt') .or. (writeall)) then
       write(unitno,fmt=f98) realwt,'realwt'
       endif
-      if ((tag .eq. 'colourchoice') .or. (writeall)) then
-      write(unitno,fmt=f97) colourchoice,'colourchoice'
-      endif
       if ((tag .eq. 'rtsmin') .or. (writeall)) then
       write(unitno,fmt=f99) rtsmin,'rtsmin'
       endif
       if ((tag .eq. 'cutoff') .or. (writeall)) then
       write(unitno,fmt=f99) cutoff,'cutoff'
-      endif
-      if ((tag .eq. 'aii') .or. (writeall)) then
-      write(unitno,fmt=f99) aii,'aii'
-      endif
-      if ((tag .eq. 'aif') .or. (writeall)) then
-      write(unitno,fmt=f99) aif,'aif'
-      endif
-      if ((tag .eq. 'afi') .or. (writeall)) then
-      write(unitno,fmt=f99) afi,'afi'
-      endif
-      if ((tag .eq. 'aff') .or. (writeall)) then
-      write(unitno,fmt=f99) aff,'aff'
-      endif
-      if ((tag .eq. 'bfi') .or. (writeall)) then
-      write(unitno,fmt=f99) bfi,'bfi'
-      endif
-      if ((tag .eq. 'bff') .or. (writeall)) then
-      write(unitno,fmt=f99) bff,'bff'
       endif
       
       if (writeall) then

@@ -13,7 +13,6 @@
       include 'realonly.f'
       include 'noglue.f'
       include 'realwt.f'
-      include 'lc.f'
       include 'cutoff.f'
       include 'factiny.f'
       include 'maxwt.f'
@@ -352,8 +351,6 @@ c---- read-in the technical parameters
       if (verbose) call writeinput(6,' * ',' ','clustering')
       read(20,*) realwt
       if (verbose) call writeinput(6,' * ',' ','realwt')
-      read(20,*) colourchoice
-      if (verbose) call writeinput(6,' * ',' ','colourchoice')
       read(20,*) rtsmin
       if (verbose) call writeinput(6,' * ',' ','rtsmin')
       read(20,*) cutoff
