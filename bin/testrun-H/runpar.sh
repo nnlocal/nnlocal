@@ -2,9 +2,9 @@
 
 > Timings.txt
 
-ncores=6
-nprocessesgrid=12
-nprocessesaccu=12
+ncores=8
+nprocessesgrid=8
+nprocessesaccu=64
 
 # First compile the nnlocal executable in the ../../ directory
 #

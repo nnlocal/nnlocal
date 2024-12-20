@@ -115,7 +115,6 @@ c--- set up most parameters
       nodecay=.false.
       nfonly=.false.
       caonly=.false.
-      rescale=.false.
 
 c-- Rbbmin is an additional variable, added so that the separation
 c-- between two b jets can be controlled separately from the Delta_R
