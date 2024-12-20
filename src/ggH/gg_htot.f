@@ -26,12 +26,9 @@ c---
 
       b0 = 11d0/4d0             !-nf/6d0
       b1 = 51d0/8d0             !-19d0*nf/24d0
-c---  NOTE HARDCODED MT!!!
-!      lt=log(musq/173.2d0**2)
       lt=log(facscale**2/mt**2)
       cw1 = 11d0/4d0
       cw2 = (2777 + 6*lt*57)/288d0
-!      logr = -dlog(125d0**2/musq)
       logr = -dlog(facscale**2/musq)
       logf = dlog(hmass**2/facscale**2)
       
@@ -49,20 +46,6 @@ c---  set msq=0 to initialize
 
       Asq=(as/(pi))**2/vevsq*pi
       gg=Asq/576
-
-!      z = 0.914489463639550304d0
-!     z = 0.621601021484443628d0
-
-!     x1 , plus   = 1 , 0.00010304159972673887 , 2.67676187068923532
-!     x1 , NLOreg   = 0.000192973958299829393 , 48.4853903843875713
-!     x1 , plus   = 2 , 0.0124668396231678771 , 215.6517807218364171
-!     x1 , NNLOreg   = 9.89572742762691581e-05 , 21520982.0064771995
-
-
-!      z = 0.00010304159972673887
-!      z = 0.000192973958299829393
-!      z = 0.0124668396231678771
-!      z = 0.451082183998782638
       
 c---  order-by-order
 c---  lo
@@ -211,12 +194,6 @@ c---  nnlo
      5        +(-33d0*logf + 36d0*logf**2)*log(1-z)
      6        +(108d0*logf)*log(1-z)**2))
          
-c         write(6,*)'NEW ',z,msqlo(0,0,1)/(gg),msqnlo(0,0,1)/(gg*(as/pi)),msqnnlo(0,0,1)/(gg*(as/pi)**2)
-c         write(6,*)'NEW ',z,msqlo(0,0,2)/(gg),msqnlo(0,0,2)/(gg*(as/pi)),msqnnlo(0,0,2)/(gg*(as/pi)**2)
-c         write(6,*)'NEW ',z,msqlo(0,0,3)/(gg),msqnlo(0,0,3)/(gg*(as/pi)),msqnnlo(0,0,3)/(gg*(as/pi)**2)
-
-c         pause
-         
       endif
 
 c---  full
@@ -269,12 +246,6 @@ c---  full
      2           + msqlo(0,0,3)*(1d0 + (as/pi)*(2d0*cw1 + 2d0*b0*logr)
      3           + (as/pi)**2*(cw1**2 + 2d0*b1*logr + 6d0*b0*cw1*logr
      4           + 3d0*b0**2*logr**2 + 2d0*cw2))
-
-
-c            msq(0,0,1) = msqnnlo(0,0,1)
-c            msq(0,0,2) = msqnnlo(0,0,2)
-c            msq(0,0,3) = msqnnlo(0,0,3)
-
             
          endif
       endif
