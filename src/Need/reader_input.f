@@ -6,7 +6,6 @@
       include 'constants.f'
       include 'order.f'
       include 'debug.f'
-      include 'new_pspace.f'
       include 'couple.f'
       include 'part.f'
       include 'virtonly.f'
@@ -41,10 +40,6 @@
       include 'breit.f'
       include 'vdecayid.f'
       include 'runstring.f'
-c--- APPLgrid - flag using grid
-      include 'ptilde.f'
-      include 'APPLinclude.f'
-c--- APPLgrid - end
       include 'singular.f'
       include 'chkseed.f'
       include 'parallel.f'

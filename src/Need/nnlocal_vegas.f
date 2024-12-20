@@ -13,16 +13,11 @@
 *       xinteg  :  value of integration                                *
 *         xerr  :  integration error                                   *
 *                                                                      *
-*    This version is modified to work with photon processes.           *
-*    At NLO one can have:                                              *
+*    born -> Born kinematic + c.t. at the required order               *  
+*    virt -> Real-Virt kinematic + c.t. at the required order          *
+*    real -> Real kinematic + c.t. at the required order               *  
 *                                                                      *
-*    virt -> Born + virtual corrections + integrated QCD counterterms  *
-*    real -> Real + subtraction terms                                  *  
-*                [+ QED photon-quark subtractions if frag=.true.]      *
-*    frag -> Fragmentation contributions, incl. integrated QED dipoles *
-*                                                                      *
-*    tota -> virt + real [frag=.false.]                                *
-*    tota -> virt + real + frag [frag=.true.]                          *
+*    tota -> born + virt + real kin.                                   *
 *                                                                      *
 ************************************************************************
 

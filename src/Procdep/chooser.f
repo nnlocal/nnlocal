@@ -21,7 +21,6 @@ c---- total cross-section comes out correctly when the BR is removed
       include 'b0.f'
       include 'colstruc.f'
       include 'clustering.f'
-      include 'frag.f'
       include 'plabel.f'
       include 'couple.f'
       include 'part.f'

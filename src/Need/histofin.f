@@ -13,7 +13,6 @@ c--- For itno>0, this is an intermediate result only
       include 'histo.f'
       include 'ehisto.f'
       include 'outputoptions.f'
-      include 'vanillafiles.f'
       include 'irregbins_incl.f'
       integer j,nlength,itno,itmx,nplotmax,nempty
       character*255 outfiledat,outfiletop,outfileerr

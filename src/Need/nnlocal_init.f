@@ -14,16 +14,10 @@
       include 'facscale.f'
       include 'scale.f'
       include 'verbose.f'
-      include 'phot_dip.f'
       include 'includect.f'
-      include 'frag.f'
       include 'histo.f'
       include 'irregbins_incl.f'
-C -- GZ
       include 'first_time.f'
-c--- for APPLgrid
-      include 'ptilde.f'
-      include 'APPLinclude.f'
       double precision rtsmin,sqrts,p1ext(4),p2ext(4),
      . p(mxpart,4),val
       integer j,k
@@ -86,10 +80,6 @@ c      cutoff=cutoff*(sqrts/10000d0)**2
       p(j,k)=0d0
       enddo
       enddo 
-
-* Initialize flag for photon fragmentation dipoles
-      phot_dip(:)=.false.
-      fragint_mode=.false. 
 
       return
       end

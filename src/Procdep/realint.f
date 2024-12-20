@@ -21,7 +21,6 @@
       include 'masses.f'
       include 'wts_bypart.f'
       include 'dipolescale.f'
-      include 'decay1q2a.f'
       include 'outputoptions.f'
       include 'breit.f'
       include 'outputflags.f'
