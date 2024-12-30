@@ -4,14 +4,14 @@ A parton-level Monte Carlo event generator for color-singlet production in hadro
 
 ## Authors
 
-* [Vittorio Del Duca](Vittorio.Del.Duca@cern.ch)
-* [Claude Duhr](cduhr@uni-bonn.de)
-* [Levente Fekésházy](levente.fekeshazy@desy.de)
-* [Flavio Guadagni](guadagni.flavio@gmail.com)
-* [Pooja Mukherjee](pooja.mukherjee@desy.de)
-* [Gábor Somogyi](somogyi.gabor@wigner.hun-ren.hu)
-* [Sam Van Thurenhout](sam.van.thurenhout@wigner.hun-ren.hu)
-* [Francesco Tramontano](francesco.tramontano@unina.it)
+* Vittorio Del Duca [Vittorio.Del.Duca@cern.ch]
+* Claude Duhr [cduhr@uni-bonn.de]
+* Levente Fekésházy [levente.fekeshazy@desy.de]
+* Flavio Guadagni [guadagni.flavio@gmail.com]
+* Pooja Mukherjee [pooja.mukherjee@desy.de]
+* Gábor Somogyi [somogyi.gabor@wigner.hun-ren.hu]
+* Sam Van Thurenhout [sam.van.thurenhout@wigner.hun-ren.hu]
+* Francesco Tramontano [francesco.tramontano@unina.it]
 
 ## Installation
 
