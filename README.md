@@ -1,6 +1,6 @@
 # NNLOCAL
 
-A parton-level Monte Carlo event generator for color-singlet production in hadron collisions at NNLO accuracy. For a description of the computational method and code, see [arXiv:2412.xxxxx](https://arxiv.org/abs/2412.xxxxx).
+A parton-level Monte Carlo event generator for color-singlet production in hadron collisions at NNLO accuracy. For a description of the computational method and code, see [arXiv:2412.21028](https://arxiv.org/abs/2412.21028).
 
 ## Authors
 
