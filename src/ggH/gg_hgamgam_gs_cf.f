@@ -65,9 +65,10 @@ c---  calculate single soft subtractions
       enddo
       enddo
 
+      
       do j=-nf,nf
       do k=-nf,nf
-
+         
       if     ((j .ne. 0) .and. (k .eq. 0)) then
 c         msq(1,j,k)=2d0*cf
 c     .   *(msq17_2(0,0)*sub17_2(gq)+msq17_2v(0,0)*sub17_2v)
@@ -80,7 +81,7 @@ c     .   *(msq27_1(0,0)*sub27_1(gq)+msq27_1v(0,0)*sub27_1v)
          msq(3,j,k)=-ca*(sub5(0)+sub5(1)+sub5(2))*msq5(j,k)
          
 c--- debug: we are adding only the subtraction to the correction
-         if (order .eq. 2) then
+         if (abs(order) .eq. 2) then
 
 c---  DEBUG: return ep^(-2) part
 c---  DEBUG: return ep^(-1) part

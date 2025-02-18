@@ -130,7 +130,7 @@ c$$$  endif
       sub(gg)=2d0*gsq/xa/sir*(2d0*(xa*(1d0-xa) + xa/(1d0-xa)))
       subv   =2d0*gsq/xa/sir*(4d0*(1d0-xa)/xa)
 
-      if ((part .eq. 'virt').and.(order .eq. 2)) then
+      if ((part .eq. 'virt').and.(abs(order) .eq. 2)) then
          call subr_virt(ptrans,msqrv)
          call subr_vcor(ptrans,vec,ip,msqrvv)
          
@@ -285,7 +285,7 @@ c--- hard coded for double real
 
       if (part .eq. 'virt') then
          nmax = 2
-         if (order .eq. 2) call subr_virt(ptrans,msqrv)
+         if (abs(order) .eq. 2) call subr_virt(ptrans,msqrv)
       endif
 c---  main loop over eikonal
       idec1 = 3
@@ -310,7 +310,7 @@ c---  soft
             eik = sjhkh/sjhr/skhr
             sub(0) = sub(0) + 2d0*eik
             
-            if ((part .eq. 'virt').and.(order .eq. 2)) then
+            if ((part .eq. 'virt').and.(abs(order) .eq. 2)) then
                subrv(-2) = subrv(-2) + two*ca*eik
                subrv(-1) = subrv(-1) + two*eik*(ca*dlog(musq*eik) + b0)
                subrv( 0) = subrv( 0) + ca*eik*(dlog(musq*eik)**2
@@ -335,7 +335,7 @@ c---  Ti.Tk added in _gs
 c         sub = sub - 2d0*colleik
          sub(j) = -2d0*colleik
          
-         if ((part .eq. 'virt').and.(order .eq. 2)) then
+         if ((part .eq. 'virt').and.(abs(order) .eq. 2)) then
             subrv(-2) = subrv(-2) - two*ca*colleik
             subrv(-1) = subrv(-1)
      .           - two*colleik*(ca*dlog(musq*colleik) + b0)

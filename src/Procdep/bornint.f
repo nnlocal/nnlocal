@@ -138,7 +138,7 @@ c--- bother calculating the matrix elements for it, instead bail out
       z=0.75123d0
       t=0.51231d0
       xjac=1d0
-      if (order.gt.0) then
+      if (abs(order).gt.0) then
             z=r(ndim-1)**2
             t=r(ndim)**2
             if (nshot .eq. 1) then
@@ -178,7 +178,7 @@ c--- corresponding to subtracting -1/epinv*Pab*log(musq_REN/musq_FAC)
          APz(g,g,:)=0d0
          APt(g,g,:)=0d0
 
-      elseif (order.ge.1) then
+      elseif (abs(order).ge.1) then
          APz(g,g,1)=+ason2pi*b0*epcorr
          APz(g,g,2)=+ason2pi*xn*2d0*(1d0/z+z*omz-2d0)*epcorr
          APz(g,g,3)=+ason2pi*xn*2d0/omz*epcorr
@@ -197,13 +197,15 @@ c--- Calculate the required matrix elements
       if (case .eq. 'H_gaga') then
          keepterm1=.true.
          call gg_hgamgam(p,msq)
-         if (order.ge.1) then
+         
+         if (abs(order).ge.1) then
             call gg_hgamgam_v(p,msqv)
             call iopmat1(p,z,t)
          endif
-         if (order.gt.1) then
+         if (abs(order).gt.1) then
             
             keepterm1=.true.
+            if (order.eq.-2) keepterm1=.false.
             keepterm2=.true.
 
             if (keepterm2.eqv..false.) goto 555
@@ -356,7 +358,7 @@ c---  calculate PDF's
          fx2t(j)=0d0
       enddo
 
-      if (order.gt.0) then
+      if (abs(order).gt.0) then
          if (z .gt. xx(1)) then
             x1onz=xx(1)/z
             call fdist(ih1,x1onz,facscale,fx1z)
@@ -415,8 +417,9 @@ c--- SUM BY TOTAL MATRIX ELEMENTS: everything else
                else
 
                   if (keepterm1) then
+                  if (order.ge.0) ymsq=ymsq+msq(g,g)*fx1(g)*fx2(g)
                   ymsq=ymsq+(msqv(g,g)
-     1                 +msq(g,g)*(one
+     1                 +msq(g,g)*(
      2                 +APz(g,g,1)-APz(g,g,3)+I10op1(g,g,g,1,1)
      3                 +APt(g,g,1)-APt(g,g,3)+I10op2(g,g,g,1,1)))*fx1(g)*fx2(g)
      4                 +(msq(g,g)*(APz(g,g,2)+APz(g,g,3)+I10op1(g,g,g,2,1))
@@ -497,7 +500,7 @@ c      endif
 
 
 c--- code to check that epsilon poles cancel      
-      if (order.gt.0) then
+      if (abs(order).gt.0) then
          if (nshot .eq. 1) then
             if (xmsq(0) .eq. 0d0) goto 999
             xmsq_old=xmsq(0)

@@ -151,7 +151,7 @@ c--  710 '  f(p1)+f(p2) -->H(-->gamma(p3)+gamma(p4))'
             hdecaymode='gaga'
 
             runstart = 0
-            if (order.eq.1) runstop = 1
+            if (abs(order).eq.1) runstop = 1
                         
             if (removebr) then
               BrnRat=gamgambr

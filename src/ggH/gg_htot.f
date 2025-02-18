@@ -45,12 +45,21 @@ c---  set msq=0 to initialize
       enddo
 
       Asq=(as/(pi))**2/vevsq*pi
-      gg=Asq/576
+      gg=Asq/576d0
       
 c---  order-by-order
 c---  lo
       msqlo(0,0,1)   = gg
 
+      if (order.eq.0) then
+         msq(0,0,1)=msqlo(0,0,1)
+         msq(0,0,2)=msqlo(0,0,2)
+         msq(0,0,3)=msqlo(0,0,3)
+      endif
+
+      if (order.eq.0) return
+
+      
 c---  nlo
       if (switch.eq.0) then
          msqnlo(0,0,1)  = gg*as/pi*(5.5d0+pisq)
@@ -70,6 +79,34 @@ c---  nlo
      2        - (6*(1 - z + z**2)**2*Log(z))/(1 - z))
       endif
 
+
+      if (order.eq.1) then
+         if (switch.eq.0) then
+            msq(0,0,1)=msqlo(0,0,1)*(1d0 + 2d0*b0*logr*(as/pi)) + msqnlo(0,0,1)
+            msq(0,0,2)=msqlo(0,0,2)*(1d0 + 2d0*b0*logr*(as/pi)) + msqnlo(0,0,2)
+            msq(0,0,3)=msqlo(0,0,3)*(1d0 + 2d0*b0*logr*(as/pi)) + msqnlo(0,0,3)
+         else
+            msq(0,0,1)=msqlo(0,0,1)*(1d0 + 2d0*(b0*logr+cw1)*(as/pi)) + msqnlo(0,0,1)
+            msq(0,0,2)=msqlo(0,0,2)*(1d0 + 2d0*(b0*logr+cw1)*(as/pi)) + msqnlo(0,0,2)
+            msq(0,0,3)=msqlo(0,0,3)*(1d0 + 2d0*(b0*logr+cw1)*(as/pi)) + msqnlo(0,0,3)
+         endif
+      endif
+
+      if (order.eq.-1) then
+         if (switch.eq.0) then
+            msq(0,0,1)=msqlo(0,0,1)*(2d0*b0*logr*(as/pi)) + msqnlo(0,0,1)
+            msq(0,0,2)=msqlo(0,0,2)*(2d0*b0*logr*(as/pi)) + msqnlo(0,0,2)
+            msq(0,0,3)=msqlo(0,0,3)*(2d0*b0*logr*(as/pi)) + msqnlo(0,0,3)
+         else
+            msq(0,0,1)=msqlo(0,0,1)*(2d0*(b0*logr+cw1)*(as/pi)) + msqnlo(0,0,1)
+            msq(0,0,2)=msqlo(0,0,2)*(2d0*(b0*logr+cw1)*(as/pi)) + msqnlo(0,0,2)
+            msq(0,0,3)=msqlo(0,0,3)*(2d0*(b0*logr+cw1)*(as/pi)) + msqnlo(0,0,3)
+         endif
+      endif
+
+      if (abs(order).eq.1) return
+
+      
 c---  nnlo
       if (switch.eq.0) then
       msqnnlo(0,0,1) = gg*(as/pi)**2*
@@ -197,23 +234,7 @@ c---  nnlo
       endif
 
 c---  full
-      if (order.eq.0) then
-         msq(0,0,1)=msqlo(0,0,1)
-         msq(0,0,2)=msqlo(0,0,2)
-         msq(0,0,3)=msqlo(0,0,3)
-      endif
 
-      if (order.eq.1) then
-         if (switch.eq.0) then
-            msq(0,0,1)=msqlo(0,0,1)*(1d0 + 2d0*b0*logr*(as/pi)) + msqnlo(0,0,1)
-            msq(0,0,2)=msqlo(0,0,2)*(1d0 + 2d0*b0*logr*(as/pi)) + msqnlo(0,0,2)
-            msq(0,0,3)=msqlo(0,0,3)*(1d0 + 2d0*b0*logr*(as/pi)) + msqnlo(0,0,3)
-         else
-            msq(0,0,1)=msqlo(0,0,1)*(1d0 + 2d0*(b0*logr+cw1)*(as/pi)) + msqnlo(0,0,1)
-            msq(0,0,2)=msqlo(0,0,2)*(1d0 + 2d0*(b0*logr+cw1)*(as/pi)) + msqnlo(0,0,2)
-            msq(0,0,3)=msqlo(0,0,3)*(1d0 + 2d0*(b0*logr+cw1)*(as/pi)) + msqnlo(0,0,3)
-         endif
-      endif
 
       if (order.eq.2) then
          if (switch.eq.0) then
@@ -249,7 +270,42 @@ c---  full
             
          endif
       endif
-         
+
+      if (order.eq.-2) then
+         if (switch.eq.0) then
+            msq(0,0,1)=msqlo(0,0,1)*(
+     1           + (2d0*b1*logr+3d0*b0**2*logr**2)*(as/pi)**2)
+     2           + msqnlo(0,0,1)*(3d0*b0*logr*(as/pi))
+     3           + msqnnlo(0,0,1)
+            msq(0,0,2)=msqlo(0,0,2)*(
+     1           + (2d0*b1*logr+3d0*b0**2*logr**2)*(as/pi)**2)
+     2           + msqnlo(0,0,2)*(3d0*b0*logr*(as/pi))
+     3           + msqnnlo(0,0,2)
+            msq(0,0,3)=msqlo(0,0,3)*(
+     1           + (2d0*b1*logr+3d0*b0**2*logr**2)*(as/pi)**2)
+     2           + msqnlo(0,0,3)*(3d0*b0*logr*(as/pi))
+     3           + msqnnlo(0,0,3)
+         else
+
+            msq(0,0,1) = msqnnlo(0,0,1)
+     1           + msqnlo(0,0,1)*((as/pi)*(2d0*cw1 + 3d0*b0*logr))
+     2           + msqlo(0,0,1)*(
+     3           + (as/pi)**2*(cw1**2 + 2d0*b1*logr + 6d0*b0*cw1*logr
+     4           + 3d0*b0**2*logr**2 + 2d0*cw2))
+            msq(0,0,2) = msqnnlo(0,0,2)
+     1           + msqnlo(0,0,2)*((as/pi)*(2d0*cw1 + 3d0*b0*logr))
+     2           + msqlo(0,0,2)*(
+     3           + (as/pi)**2*(cw1**2 + 2d0*b1*logr + 6d0*b0*cw1*logr
+     4           + 3d0*b0**2*logr**2 + 2d0*cw2))
+            msq(0,0,3) = msqnnlo(0,0,3)
+     1           + msqnlo(0,0,3)*((as/pi)*(2d0*cw1 + 3d0*b0*logr))
+     2           + msqlo(0,0,3)*(
+     3           + (as/pi)**2*(cw1**2 + 2d0*b1*logr + 6d0*b0*cw1*logr
+     4           + 3d0*b0**2*logr**2 + 2d0*cw2))
+            
+         endif
+      endif
+      
       return
       end
 

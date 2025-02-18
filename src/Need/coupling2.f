@@ -55,10 +55,10 @@ c--- if it hasn't been set by pdfwrap already
       if (order .eq. 0) then
          nlooprun=1
          if (nproc.eq.709) nlooprun=3
-      elseif (order .eq. 1) then
+      elseif (abs(order) .eq. 1) then
          nlooprun=2
          if (nproc.eq.709) nlooprun=3
-      elseif (order .eq. 2) then
+      elseif (abs(order) .eq. 2) then
          nlooprun=3
       endif
 

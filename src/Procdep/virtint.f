@@ -136,7 +136,7 @@ c--- bother calculating the matrix elements for it, instead bail out
       z=0.5d0
       t=0.5d0
       xjac=1d0
-      if ((nproc.eq.709.and.order.eq.1).or.order.gt.1) then
+      if ((nproc.eq.709.and.order.eq.1).or.abs(order).gt.1) then
          z=r(ndim-1)**2
          t=r(ndim)**2
          if (nshot .eq. 1) then
@@ -158,12 +158,12 @@ c--- correction to epinv from AP subtraction when mu_FAC != mu_REN,
 c--- corresponding to subtracting -1/epinv*Pab*log(musq_REN/musq_FAC)
       epcorr=epinv+2d0*dlog(scale/facscale)
       
-      if (order.le.1) then
+      if (abs(order).le.1) then
          APz(g,g,:)=0d0
          APt(g,g,:)=0d0
       endif
 
-      if ((nproc.eq.709.and.order.eq.1).or.order.gt.1) then
+      if ((nproc.eq.709.and.order.eq.1).or.abs(order).gt.1) then
          APz(g,g,1)=+ason2pi*b0*epcorr
          APz(g,g,2)=+ason2pi*xn*2d0*(1d0/z+z*omz-2d0)*epcorr
          APz(g,g,3)=+ason2pi*xn*2d0/omz*epcorr
@@ -194,7 +194,7 @@ c--- Calculate the required matrix elements
          if (includevirt) call gg_hgagag(p,msq)
          if (nproc.eq.710) then
             call gg_hgamgam_gs_cf(p,msqs,msqvs,msqx)
-            if (order.eq.2) then
+            if (abs(order).eq.2) then
                if (includevirt) call gg_hgagag_v(p,msqv)
                call gg_hg_z_cf(p,z,t)
                do nd=1,ndmax
@@ -295,7 +295,7 @@ c---  calculate PDF's
          fx2t(j)=0d0
       enddo
 
-      if ((nproc.eq.709.and.order.eq.1).or.order.gt.1) then
+      if ((nproc.eq.709.and.order.eq.1).or.abs(order).gt.1) then
          
          if (z .gt. xx(1)) then
             x1onz=xx(1)/z
@@ -347,8 +347,9 @@ c---  SUM BY TOTAL MATRIX ELEMENTS: everything else
      1              +msq(-5,g)+msq(-4,g)+msq(-3,g)+msq(-2,g)+msq(-1,g)
                msq_gq=msq(g,+5)+msq(g,+4)+msq(g,+3)+msq(g,+2)+msq(g,+1)
      1              +msq(g,-5)+msq(g,-4)+msq(g,-3)+msq(g,-2)+msq(g,-1)
+               if (order.ge.-1) ymsq=ymsq+msq(g,g)*fx1(g)*fx2(g)
                ymsq=ymsq+(msqv(g,g)
-     1              +msq(g,g)*(one+APz(g,g,1)-APz(g,g,3)+T1(g,g,g,1)
+     1              +msq(g,g)*(APz(g,g,1)-APz(g,g,3)+T1(g,g,g,1)
      2              +APt(g,g,1)-APt(g,g,3)+T2(g,g,g,1)))*fx1(g)*fx2(g)
      3              +(msq(g,g)*(APz(g,g,2)+APz(g,g,3)+T1(g,g,g,2))
      4              )*fx1z(g)/z*fx2(g)
@@ -388,7 +389,7 @@ c---  SUM BY TOTAL MATRIX ELEMENTS: everything else
                xmsq_bypart(0,sgnj,sgnk)=xmsq_bypart(0,sgnj,sgnk)+ymsq
             endif
             
-            if ((nproc.eq.710.and.order.eq.1).or.order.gt.1) then
+            if ((nproc.eq.710.and.abs(order).eq.1).or.abs(order).gt.1) then
                
                do nd=1,ndmax
                   zmsq=0d0
@@ -402,8 +403,9 @@ c---  SUM BY TOTAL MATRIX ELEMENTS: everything else
 C--   gg
                         if (nd.lt.3) then
 
+                           if (order.ge.-1) zmsq=zmsq-msqs(nd,g,g)*fx1(g)*fx2(g)
                            zmsq=zmsq+(-msqvs(nd,g,g)
-     1                          -msqs(nd,g,g)*(one
+     1                          -msqs(nd,g,g)*(
      2                          +APz(g,g,1)-APz(g,g,3)
      3                          +Tp1(nd,g,g,g,1,0)
      4                          +APt(g,g,1)-APt(g,g,3)
@@ -426,8 +428,10 @@ C--   gg
      3                          *fx1z(g)/z*fx2t(g)/t
                            
                         elseif (nd.eq.3) then 
+
+                           if (order.ge.-1) zmsq=zmsq-msqs(nd,g,g)*fx1(g)*fx2(g)
                            zmsq=zmsq+(-msqvs(nd,g,g)
-     1                          -msqs(nd,g,g)*(one+APz(g,g,1)-APz(g,g,3)
+     1                          -msqs(nd,g,g)*(APz(g,g,1)-APz(g,g,3)
      2                          +APt(g,g,1)-APt(g,g,3)
      3                          ))
      4                          *fx1(g)*fx2(g)
