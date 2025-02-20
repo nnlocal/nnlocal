@@ -11,3 +11,5 @@ c---            (dependent on 'cutoff') due to 'masscuts' and 'smalls'
 
       integer njetzero,ncutzero,ntotzero,ntotshot
       common/efficiency/njetzero,ncutzero,ntotzero,ntotshot
+      integer ntotborn,ntotquad,ntotskip
+      common/efficiency/ntotborn,ntotquad,ntotskip

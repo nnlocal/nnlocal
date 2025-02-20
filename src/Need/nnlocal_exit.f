@@ -53,6 +53,9 @@ c---  normalized by sigma(gg->H, finite mt)/sigma(gg->H, mt-> infinity)
 
 c--- Print-out a summary of the effects of jets and cuts
       write(6,*) 
+      write(6,*) 'Total number of born        : ',ntotborn
+      write(6,*) 'Total number of quad        : ',ntotquad
+      write(6,*) 'Total number of skip        : ',ntotskip
       write(6,*) 'Total number of shots       : ',ntotshot
       write(6,*) 'Total no. failing cuts      : ',ntotzero
       write(6,*) 'Number failing jet cuts     : ',njetzero

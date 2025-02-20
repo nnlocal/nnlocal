@@ -58,6 +58,9 @@
         ncutzero=0
         ntotzero=0
         ntotshot=0
+        ntotborn=0
+        ntotquad=0
+        ntotskip=0
         call nnlocal_vegas(0,itmx1,ncall1,dryrun,integ,integ_err)
         itmxplots=itmx1
       endif
@@ -75,6 +78,9 @@
             ncutzero=0
             ntotzero=0
             ntotshot=0
+            ntotborn=0
+            ntotquad=0
+            ntotskip=0
             call nnlocal_vegas(1,itmx2,ncall2,.true.,integ,integ_err)
             itmxplots=itmx2
          endif

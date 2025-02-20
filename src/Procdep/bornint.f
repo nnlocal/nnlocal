@@ -95,6 +95,7 @@
          fscalestart=facscale
       endif
 
+      ntotborn=ntotborn+1
       ntotshot=ntotshot+1
       pswt=0d0
       bornint=0d0
@@ -220,6 +221,7 @@ c--- Calculate the required matrix elements
      7           abs(z-t).lt.tiny
      8           ) then
                keepterm2=.false.
+               ntotskip=ntotskip+1
                goto 555
             endif
             
@@ -235,6 +237,7 @@ c--- Calculate the required matrix elements
      6           abs(9d0*t-z).lt.tin2.or.
      7           abs(z-t).lt.tin2
      8           ) then
+               ntotquad=ntotquad+1
                call iopmat2(p,z,t)
                call BuildICT(p,tmp1,tmp2,resab,1d0,0d0)
                call BuildICT(p,tmp1,tmp2,resba,0d0,1d0)
