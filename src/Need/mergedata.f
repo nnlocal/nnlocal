@@ -16,8 +16,7 @@ c one per line, to be merged. An empty lines terminates the list.
       integer ilength
       external ilength
 
-      integer ival
-      integer maxup,maxdn,j,nfilest,ind
+      integer maxup,maxdn,j,nfilest
       parameter (maxup=5,maxdn=5)
       real * 8 upval(maxup,maxlines),uperr(maxup,maxlines)
       real * 8 dnval(maxdn,maxlines),dnerr(maxdn,maxlines)
@@ -217,7 +216,7 @@ c load data
          endif
       enddo
 
-c--- cleaning
+c--- trimming
       rewind 12
       do k=1,nlines(1)
          if (trim(adjustl(line(k,1))) == '') then
@@ -265,10 +264,3 @@ c--- cleaning
       enddo
       ilength=0
       end
-
-      INTEGER FUNCTION IVAL(STRO)
-          CHARACTER*(*) STRO
-          INTEGER I
-          READ(STRO,*) IVAL
-          IVAL = I
-      END FUNCTION
