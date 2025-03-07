@@ -4,7 +4,7 @@
 
 ncores=8
 nprocessesgrid=8
-nprocessesaccu=64
+nprocessesaccu=128
 
 # First compile the nnlocal executable in the ../../ directory
 #
@@ -53,12 +53,12 @@ wait
 ./reslist.sh st2 st2 &
 
 
-(echo 1 ; ls -c1 ????-????.gnu ; echo "") | ../mergedata
+(echo 1 0 0 ; ls -c1 ????-????.gnu ; echo "") | ../mergedata
 mv fort.12 nnlocal-1.top
 
 wait
 
-(echo 2 ; ls -c1 ????-????.gnu ; echo "") | ../mergedata
+(echo 2 0 0 ; ls -c1 ????-????.gnu ; echo "") | ../mergedata
 mv fort.12 nnlocal-2.top
 
 (echo -n end '     ' ; date ) >> Timings.txt

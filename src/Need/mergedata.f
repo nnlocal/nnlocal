@@ -16,6 +16,14 @@ c one per line, to be merged. An empty lines terminates the list.
       integer ilength
       external ilength
 
+      integer ival
+      integer maxup,maxdn,j,nfilest,ind
+      parameter (maxup=5,maxdn=5)
+      real * 8 upval(maxup,maxlines),uperr(maxup,maxlines)
+      real * 8 dnval(maxdn,maxlines),dnerr(maxdn,maxlines)
+      real * 8 tmpval,tmperr
+      integer maxupt,maxdnt,maxuptrim,maxdntrim
+      
 C - kh modification started here >>>>>>>
       imethod=-1
       CALL getarg(1,cmethod)
@@ -53,6 +61,7 @@ C - kh modification started here >>>>>>>
       endif
  9    continue
 
+
       if(imethod.eq.0) then
 C - <<<<<<< kh modification ended here.
       write(*,*) ' enter 1 for combining sets with equal statistics'
@@ -60,7 +69,7 @@ C - <<<<<<< kh modification ended here.
       write(*,*) ' 3 to add sets (like born+virtual+real ... etc'
       write(*,*) ' 4 to get maximum'
       write(*,*) ' 5 to get minimum'
-      read(*,*) imethod
+      read(*,*) imethod,maxuptrim,maxdntrim
       write(*,*) ' enter files'
       do ifile=1,maxfiles
          read(*,'(a)') files(ifile)
@@ -73,6 +82,14 @@ C - <<<<<<< kh modification ended here.
       call exit(-1)
       endif
  10   continue
+c fix trim length
+      maxupt=0
+      if (maxuptrim.gt.0.and.maxuptrim.lt.nfiles
+     1     .and.maxuptrim.le.maxup) maxupt=maxuptrim
+      maxdnt=0
+      if (maxdntrim.gt.0.and.maxdntrim.lt.nfiles
+     1     .and.maxdntrim.le.maxdn) maxdnt=maxdntrim
+      write(*,*) maxupt+maxdnt,'entries removed from each bin'
 c load data
       do ifile=1,nfiles
          open(unit=11,file=files(ifile),status='old')
@@ -104,6 +121,13 @@ c load data
             if(imethod.eq.1) then
                y=v3
                err=v4**2
+               upval(1,k)=y
+               uperr(1,k)=err
+               do j=1,maxdnt-1
+                  dnerr(j,k)=1d100
+               enddo
+               dnval(maxdnt,k)=y
+               dnerr(maxdnt,k)=err
             elseif(imethod.eq.2) then
                if(v4.ne.0) then
                   y=v3/v4**2
@@ -125,6 +149,34 @@ c load data
             do ifile=2,nfiles
                read(unit=line(k,ifile),fmt=*,iostat=ios) v1,v2,v3,v4
                if(imethod.eq.1.or.imethod.eq.3) then
+                  if (v4**2.gt.uperr(maxupt,k)) then
+                     upval(maxupt,k)=v3
+                     uperr(maxupt,k)=v4**2
+                     do j=maxupt-1,1,-1
+                        if (uperr(j,k).lt.uperr(j+1,k)) then
+                           tmpval=upval(j,k)
+                           tmperr=uperr(j,k)
+                           upval(j,k)=upval(j+1,k)
+                           uperr(j,k)=uperr(j+1,k)
+                           upval(j+1,k)=tmpval
+                           uperr(j+1,k)=tmperr
+                        endif
+                     enddo
+                  endif
+                  if (v4**2.lt.dnerr(maxdnt,k)) then
+                     dnval(maxdnt,k)=v3
+                     dnerr(maxdnt,k)=v4**2
+                     do j=maxdnt-1,1,-1
+                        if (dnerr(j,k).gt.dnerr(j+1,k)) then
+                           tmpval=dnval(j,k)
+                           tmperr=dnerr(j,k)
+                           dnval(j,k)=dnval(j+1,k)
+                           dnerr(j,k)=dnerr(j+1,k)
+                           dnval(j+1,k)=tmpval
+                           dnerr(j+1,k)=tmperr
+                        endif
+                     enddo
+                  endif
                   y=y+v3
                   err=err+v4**2
                elseif(imethod.eq.2) then
@@ -164,6 +216,40 @@ c load data
             write(12,'(4(1x,d14.8))') v1,v2,y,err
          endif
       enddo
+
+c--- cleaning
+      rewind 12
+      do k=1,nlines(1)
+         if (trim(adjustl(line(k,1))) == '') then
+            write(13,*)
+            cycle
+         endif
+         read(12,fmt=*,iostat=ios) v1,v2,v3,v4
+         if(ios.ne.0) then
+            write(13,'(a)') line(k,1)(1:ilength(line(k,1)))
+         else
+            if(imethod.eq.1) then
+               y=v3*nfiles
+               err=(v4*nfiles)**2
+               do j=1,maxupt
+                  y=y-upval(j,k)
+                  err=err-uperr(j,k)
+               enddo
+               nfilest=nfiles-maxupt
+               if (dnerr(1,k).lt.1d100) then
+                  do j=1,maxdnt
+                     y=y-dnval(j,k)
+                     err=err-dnerr(j,k)
+                  enddo
+                  nfilest=nfilest-maxdnt
+               endif
+               y=y/nfilest
+               if (err.lt.0) err=0
+               err=sqrt(err/nfilest**2)
+               write(13,'(4(1x,d14.8))') v1,v2,y,err
+            endif
+         endif
+      enddo
       end
 
 
@@ -179,3 +265,10 @@ c load data
       enddo
       ilength=0
       end
+
+      INTEGER FUNCTION IVAL(STRO)
+          CHARACTER*(*) STRO
+          INTEGER I
+          READ(STRO,*) IVAL
+          IVAL = I
+      END FUNCTION
