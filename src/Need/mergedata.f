@@ -59,8 +59,6 @@ C - kh modification started here >>>>>>>
          enddo
       endif
  9    continue
-
-
       if(imethod.eq.0) then
 C - <<<<<<< kh modification ended here.
       write(*,*) ' enter 1 for combining sets with equal statistics'
@@ -81,14 +79,15 @@ C - <<<<<<< kh modification ended here.
       call exit(-1)
       endif
  10   continue
-c fix trim length
+c set trim length
       maxupt=0
       if (maxuptrim.gt.0.and.maxuptrim.lt.nfiles
      1     .and.maxuptrim.le.maxup) maxupt=maxuptrim
       maxdnt=0
       if (maxdntrim.gt.0.and.maxdntrim.lt.nfiles
      1     .and.maxdntrim.le.maxdn) maxdnt=maxdntrim
-      write(*,*) maxupt+maxdnt,'entries removed from each bin'
+      if (maxupt+maxdnt.gt.0) write(*,*) maxupt+maxdnt,
+     1     'entries removed from each bin'
 c load data
       do ifile=1,nfiles
          open(unit=11,file=files(ifile),status='old')
@@ -215,7 +214,7 @@ c load data
             write(12,'(4(1x,d14.8))') v1,v2,y,err
          endif
       enddo
-
+      if (maxupt+maxdnt.eq.0) return
 c--- trimming
       rewind 12
       do k=1,nlines(1)

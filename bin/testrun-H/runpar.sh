@@ -2,9 +2,10 @@
 
 > Timings.txt
 
+seed=100
 ncores=8
 nprocessesgrid=8
-nprocessesaccu=128
+nprocessesaccu=16
 
 # First compile the nnlocal executable in the ../../ directory
 #
@@ -27,9 +28,9 @@ do
 
 (echo -n st1 xg$igrid ' ' ; date ) >> Timings.txt
 
-for i in `seq $nprocessesgrid`
+for j in `seq $nprocessesgrid`
 do
-    ../nnlocal input.DAT $i xg$igrid- $nprocessesgrid $igrid > run-st1-xg$igrid-$i.log 2>&1 &
+    ../nnlocal input.DAT $(( $seed + $j )) $j xg$igrid $nprocessesgrid $igrid > run-st1-xg$igrid-$j.log 2>&1 &
     limit_procs
 done
 
@@ -43,9 +44,9 @@ wait
 
 
 (echo -n st2 '     ' ; date ) >> Timings.txt
-for i in `seq $nprocessesaccu`
+for j in `seq $nprocessesaccu`
 do
-    ../nnlocal input.DAT $i st2- $nprocessesgrid $maxgrid > run-st2-$i.log 2>&1 &
+    ../nnlocal input.DAT $(( $seed + $j )) $j st2 $nprocessesgrid $maxgrid > run-st2-$j.log 2>&1 &
     limit_procs
 done
 wait

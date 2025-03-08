@@ -306,19 +306,19 @@ c--- in the idim-dimensional integration range
       character *4 part
       character *4 nfilech,igridch
       integer ndim
-      call get_command_argument(4,nfilech)
+      call get_command_argument(5,nfilech)
       read(nfilech,'(I4)') nfile
-      call get_command_argument(5,igridch)
+      call get_command_argument(6,igridch)
       
       
-      prename=stage//seedchar//'-'
-      if (stage .eq. 'xg1-') then
+      prename=stage//'-'//seedchar//'-'
+      if (stage .eq. 'xg1') then
          readin=.false.
          writeout=.true.
          outgridfile=prename//part//'.grid'
       else
          readin=.true.
-         if (stage .eq. 'st2-') then
+         if (stage .eq. 'st2') then
             write(6,*) 'building grid'
             call cmpnewgridpars(ndim,igridch,part,1)
             ingridfile='cfmc-'//seedchar//'-'//part//'.grid'
@@ -326,7 +326,7 @@ c--- in the idim-dimensional integration range
          else
             write(6,*) 'building grid'
             call cmpnewgridpars(ndim,igridch,part,0)
-            ingridfile='cfmc-'//seedchar//'-'//stage//part//'.grid'             
+            ingridfile='cfmc-'//seedchar//'-'//stage//'-'//part//'.grid'             
             writeout=.true.
             outgridfile=prename//part//'.grid'          
          endif

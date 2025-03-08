@@ -169,11 +169,13 @@ c------ normal case
          read(seedchar,'(I4)') seed
          origij=seed
          if (verbose) call writeinput(6,' * ',' ','ij')
+         call get_command_argument(3,seedchar)
+         read(seedchar,'(I4)') seed
          write(seedchar,'(i4.4)') seed
-         call get_command_argument(3,stage)
+         call get_command_argument(4,stage)
          itmx1=1
 c         itmx2=1
-         if (stage.ne.'st2-') itmx2=0
+         if (stage.ne.'st2') itmx2=0
       else
          if (verbose) call writeinput(6,' * ',' ','ij')
       endif
@@ -278,12 +280,12 @@ c--- grid information
       read(20,*) readin
       read(20,*) writeout
       if (parallel.eq.1) then
-         if (stage.eq.'xg1-') then
+         if (stage.eq.'xg1') then
             readin = .false.
          else
             readin = .true.
          endif
-         if (stage.eq.'st2-') then
+         if (stage.eq.'st2') then
             writeout = .false.
          else
             writeout = .true.

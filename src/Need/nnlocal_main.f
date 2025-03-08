@@ -40,7 +40,7 @@
       unweight = .false.
 * if we're reading in a grid, there's no need to do any warming-up
       if (readin) dryrun=.true.
-      if (parallel.eq.1.and.stage.ne.'st2-') dryrun=.false.
+      if (parallel.eq.1.and.stage.ne.'st2') dryrun=.false.
       
 * This is the nnlocal_vegas(warmup) call
 * The Vegas parameters are those read from options.DAT for

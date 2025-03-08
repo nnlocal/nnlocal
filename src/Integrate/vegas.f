@@ -229,6 +229,7 @@ c--- added to write out intermediate results
 c--- write-out grid if necessary
       if (writeout) then
          if (parallel.eq.1) then
+            write(6,*) 'ciao vegas, outgridfile',outgridfile
             open(unit=11,file=outgridfile,status='unknown')
          else
             if (it .lt. itmx) then
