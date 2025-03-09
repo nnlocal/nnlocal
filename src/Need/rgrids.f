@@ -3,7 +3,7 @@
       integer nd,mxdim,ndim,i,j,jj
       PARAMETER (nd=50,mxdim=9999)
       double precision xi(nd,mxdim)
-      character *20 ingridfile
+      character *24 ingridfile
       character *39 var
       character *2 ll
       integer filen

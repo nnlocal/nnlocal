@@ -6,10 +6,8 @@
 
 for file in $@
 do
-    if [[ "$file" != "cfmc"*"xg"* ]];then
-	../gridplot $file
-	gnuplot $file.gnu
-    fi
+    ../gridplot $file
+    gnuplot $file.gnu
 done
 
 exit
