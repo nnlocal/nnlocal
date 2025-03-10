@@ -22,15 +22,16 @@ function limit_procs {
 }
 
 maxgrid=4
+k=0
 # two stages of importance sampling grid calculation
 for igrid in `seq $maxgrid`
 do
 
 (echo -n st1 xg$igrid ' ' ; date ) >> Timings.txt
-
 for j in `seq $nprocessesgrid`
 do
-    ../nnlocal input.DAT $(( $seed + $j )) $j xg$igrid $nprocessesgrid $igrid > run-st1-xg$igrid-$j.log 2>&1 &
+    ((k++))
+    ../nnlocal input.DAT $(( $seed + $k )) $j xg$igrid $nprocessesgrid $igrid > run-st1-xg$igrid-$j.log 2>&1 &
     limit_procs
 done
 
@@ -46,7 +47,8 @@ wait
 (echo -n st2 '     ' ; date ) >> Timings.txt
 for j in `seq $nprocessesaccu`
 do
-    ../nnlocal input.DAT $(( $seed + $j )) $j st2 $nprocessesgrid $maxgrid > run-st2-$j.log 2>&1 &
+    ((k++))
+    ../nnlocal input.DAT $(( $seed + $k )) $j st2 $nprocessesgrid $maxgrid > run-st2-$j.log 2>&1 &
     limit_procs
 done
 wait
