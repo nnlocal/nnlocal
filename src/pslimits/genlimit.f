@@ -17,6 +17,7 @@
       parameter(nit=5)
 
       double precision yir,zr,yjs,zs,phi,yirs,zrs,phi2
+      double precision yir0,zr0,yjs0,zs0,yirs0,zrs0
 
       double precision p_sg_in(100,1:5), p_sg_out(100,1:5)
      .                ,p_sg_tmp(100,1:5)
@@ -24,8 +25,8 @@
       character*1 ccont
       character*20 limit
 
-      double precision rn,scale
-      parameter(scale=.5d0)
+      double precision rn, rnmin, rndel, scale
+      parameter(rnmin=2d-1, rndel=6d-1, scale=8d0)
       common/energy/sqrts
       logical first
       data first/.true./
@@ -66,7 +67,7 @@ C---Setup for the limit
       
 C---Generate starting phase space with Rambo
  10   call psbanner(limit,ip,rp,jp,sp)
-      if (nrambo.gt.1) then 
+      if (nrambo.gt.1) then
          call rambo(nrambo,sqrts,masses,ptmp,wgt)
       elseif (nrambo.eq.1) then
          sqrts=masses(1)
@@ -98,11 +99,12 @@ c      do step=0,nit
 C---coll2
          if (limit.eq.'coll2') then
             if (step.eq.0) then
-               yir = rn(1) 
-               zr = rn(2)
+               yir0 = rndel*rn(1)+rnmin
+               yir = yir0
+               zr = rndel*rn(2)+rnmin
                phi = TWOPI*rn(3)
             else
-               yir = yir*(scale**step)
+               yir = yir0*scale**(-step)
             endif
             call pTOsingen(p,p_sg_in)
             call singen(npart+2-1,(0d0,0d0),p_sg_in,
@@ -115,11 +117,12 @@ C---coll2
 C---icoll2
          elseif (limit.eq.'icoll2') then
             if (step.eq.0) then
-               yir = rn(1) 
-               zr = rn(2)
+               yir0 = rndel*rn(1)+rnmin
+               yir = yir0
+               zr = rndel*rn(2)+rnmin
                phi = TWOPI*rn(3)
             else
-               yir = yir*(scale**step)
+               yir = yir0*scale**(-step)
             endif
             call pTOsingen(p,p_sg_in)
             call singen(npart+2-1,(0d0,0d0),p_sg_in,
@@ -131,15 +134,17 @@ C---icoll2
 C---coll3
          elseif (limit.eq.'coll3') then
             if (step.eq.0) then
-               yir = rn(1) 
-               zr = rn(2)
+               yir0 = rndel*rn(1)+rnmin
+               yir = yir0
+               zr = rndel*rn(2)+rnmin
                phi = TWOPI*rn(3)
-               yirs = rn(4) 
-               zrs = rn(5)
+               yirs0 = rndel*rn(4)+rnmin
+               yirs = yirs0
+               zrs = rndel*rn(5)+rnmin
                phi2 = TWOPI*rn(6)
             else
-               yir = yir*(scale**step)
-               yirs = yirs*(scale**step)
+               yir = yir0*scale**(-step)
+               yirs = yirs0*scale**(-step)
             endif
             call pTOsingen(p,p_sg_in)
             call singen(npart+2-2,(0d0,0d0),p_sg_in,
@@ -155,15 +160,17 @@ C---coll3
 C---icoll3
          elseif (limit.eq.'icoll3') then
             if (step.eq.0) then
-               yir = rn(1) 
-               zr = rn(2)
+               yir0 = rndel*rn(1)+rnmin
+               yir = yir0
+               zr = rndel*rn(2)+rnmin
                phi = TWOPI*rn(3)
-               yirs = rn(4) 
-               zrs = rn(5)
+               yirs0 = rndel*rn(4)+rnmin
+               yirs = yirs0
+               zrs = rndel*rn(5)+rnmin
                phi2 = TWOPI*rn(6)
             else
-               yir = yir*(scale**step)
-               yirs = yirs*(scale**step)
+               yir = yir0*scale**(-step)
+               yirs = yirs0*scale**(-step)
             endif
             call pTOsingen(p,p_sg_in)
             call singen(npart+2-2,(0d0,0d0),p_sg_in,
@@ -178,15 +185,17 @@ C---icoll3
 C---coll22
          elseif (limit.eq.'coll22') then
             if (step.eq.0) then
-               yir = rn(1) 
-               zr = rn(2)
+               yir0 = rndel*rn(1)+rnmin
+               yir = yir0
+               zr = rndel*rn(2)+rnmin
                phi = TWOPI*rn(3)
-               yjs = rn(4) 
-               zs = rn(5)
-               phi2 = TWOPI*rn(5)
+               yjs0 = rndel*rn(4)+rnmin
+               yjs = yjs0
+               zs = rndel*rn(5)+rnmin
+               phi2 = TWOPI*rn(6)
             else
-               yir = yir*(scale**step)
-               yjs = yjs*(scale**step)
+               yir = yir0*scale**(-step)
+               yjs = yjs0*scale**(-step)
             endif
             call pTOsingen(p,p_sg_in)
             call singen(npart+2-2,(0d0,0d0),p_sg_in,
@@ -203,15 +212,17 @@ C---coll22
 C---icoll22
          elseif (limit.eq.'icoll22') then
             if (step.eq.0) then
-               yir = rn(1) 
-               zr = rn(2)
+               yir0 = rndel*rn(1)+rnmin
+               yir = yir0
+               zr = rndel*rn(2)+rnmin
                phi = TWOPI*rn(3)
-               yjs = rn(4) 
-               zs = rn(5)
-               phi2 = TWOPI*rn(5)
+               yjs0 = rndel*rn(4)+rnmin
+               yjs = yjs0
+               zs = rndel*rn(5)+rnmin
+               phi2 = TWOPI*rn(6)
             else
-               yir = yir*(scale**step)
-               yjs = yjs*(scale**step)
+               yir = yir0*scale**(-step)
+               yjs = yjs0*scale**(-step)
             endif
             call pTOsingen(p,p_sg_in)
             call singen(npart+2-2,(0d0,0d0),p_sg_in,
@@ -227,15 +238,17 @@ C---icoll22
 C---iicoll22
          elseif (limit.eq.'iicoll22') then
             if (step.eq.0) then
-               yir = rn(1) 
-               zr = rn(2)
+               yir0 = rndel*rn(1)+rnmin
+               yir = yir0
+               zr = rndel*rn(2)+rnmin
                phi = TWOPI*rn(3)
-               yjs = rn(4) 
-               zs = rn(5)
-               phi2 = TWOPI*rn(5)
+               yjs0 = rndel*rn(4)+rnmin
+               yjs = yjs0
+               zs = rndel*rn(5)+rnmin
+               phi2 = TWOPI*rn(6)
             else
-               yir = yir*(scale**step)
-               yjs = yjs*(scale**step)
+               yir = yir0*scale**(-step)
+               yjs = yjs0*scale**(-step)
             endif
             call pTOsingen(p,p_sg_in)
             call singen(npart+2-2,(0d0,0d0),p_sg_in,
@@ -250,11 +263,12 @@ C---iicoll22
 C---soft1
          elseif (limit.eq.'soft1') then
             if (step.eq.0) then
-               yir = rn(1) 
-               zr = rn(2)
+               yir = rndel*rn(1)+rnmin
+               zr0 = rndel*rn(2)+rnmin
+               zr = zr0
                phi = TWOPI*rn(3)
             else
-               zr = zr*(scale**step)
+               zr = zr0*scale**(-step)
             endif
             call pTOsingen(p,p_sg_in)
             call singen(npart+2-1,(0d0,0d0),p_sg_in,
@@ -266,14 +280,15 @@ C---soft1
 C---soft2
          elseif (limit.eq.'soft2') then
             if (step.eq.0) then
-               yir = rn(1) 
-               zr = rn(2)
+               yir = rndel*rn(1)+rnmin
+               zr0 = rndel*rn(2)+rnmin
+               zr = zr0
                phi = TWOPI*rn(3)
-               yjs = rn(4) 
-               zs = rn(5)
-               phi2 = TWOPI*rn(5)
+               yjs = rndel*rn(4)+rnmin
+               zs = rndel*rn(5)+rnmin
+               phi2 = TWOPI*rn(6)
             else
-               zr = zr*(scale**step)
+               zr = zr0*scale**(-step)
             endif
             call pTOsingen(p,p_sg_in)
             call singen(npart+2-2,(0d0,0d0),p_sg_in,
@@ -288,15 +303,17 @@ C---soft2
 C---softcoll3
          elseif (limit.eq.'softcoll3') then
             if (step.eq.0) then
-               yir = rn(1) 
-               zr = rn(2)
+               yir0 = rndel*rn(1)+rnmin
+               yir = yir0
+               zr = rndel*rn(2)+rnmin
                phi = TWOPI*rn(3)
-               yjs = rn(4) 
-               zs = rn(5)
-               phi2 = TWOPI*rn(5)
+               yjs = rndel*rn(4)+rnmin
+               zs0 = rndel*rn(5)+rnmin
+               zs = zs0
+               phi2 = TWOPI*rn(6)
             else
-               yir = yir*(scale**(2*step))
-               zs = zs*(scale**step)
+               yir = yir0*scale**(-step)
+               zs = zs0*scale**(-step/2.)
             endif
             call pTOsingen(p,p_sg_in)
             call singen(npart+2-2,(0d0,0d0),p_sg_in,
@@ -312,15 +329,17 @@ C---softcoll3
 C---isoftcoll3
          elseif (limit.eq.'isoftcoll3') then
             if (step.eq.0) then
-               yir = rn(1) 
-               zr = rn(2)
+               yir0 = rndel*rn(1)+rnmin
+               yir = yir0
+               zr = rndel*rn(2)+rnmin
                phi = TWOPI*rn(3)
-               yjs = rn(4) 
-               zs = rn(5)
-               phi2 = TWOPI*rn(5)
+               yjs = rndel*rn(4)+rnmin
+               zs0 = rndel*rn(5)+rnmin
+               zs = zs0
+               phi2 = TWOPI*rn(6)
             else
-               yir = yir*(scale**(2*step))
-               zs = zs*(scale**step)
+               yir = yir0*scale**(-step)
+               zs = zs0*scale**(-step/2.)
             endif
             call pTOsingen(p,p_sg_in)
             call singen(npart+2-2,(0d0,0d0),p_sg_in,

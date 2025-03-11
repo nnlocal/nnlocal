@@ -5,23 +5,27 @@
       subroutine printmom(p,n,verbosity)
       implicit none
       include 'constants.f'
-      double precision sqrts
-      common/energy/sqrts
+c      double precision sqrts
+c      common/energy/sqrts
       double precision p(4,mxpart),xi(mxpart),yij(mxpart,mxpart),
-     .     cosij(mxpart,mxpart),sum(4)
+     .     cosij(mxpart,mxpart),sum(4),stot
       integer n,i,j,verbosity
+
+C---Compute stot
+      stot = 2d0*(p(4,1)*p(4,2)-p(1,1)*p(1,2)-p(2,1)*p(2,2)
+     .           -p(3,1)*p(3,2))
       
 C---Compute scaled energies, scaled dotproducts, cosines, summed momentum
       sum(:)=0d0
       do i=1,n
-         xi(i)=p(4,i)/sqrts
+         xi(i)=p(4,i)/dsqrt(stot)
          do j = 1,4
             sum(j)=sum(j)+p(j,i)
          enddo
          do j=1,n
             yij(i,j)=p(4,i)*p(4,j)-p(1,i)*p(1,j)-p(2,i)*p(2,j)
      .           -p(3,i)*p(3,j)
-            yij(i,j)=2d0*yij(i,j)/sqrts/sqrts
+            yij(i,j)=2d0*yij(i,j)/stot
             cosij(i,j)=p(1,i)*p(1,j)+p(2,i)*p(2,j)+p(3,i)*p(3,j)
             if (((p(1,i)*p(1,i)+p(2,i)*p(2,i)
      .           +p(3,i)*p(3,i)).gt.0d0)
