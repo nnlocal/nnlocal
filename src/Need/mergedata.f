@@ -121,11 +121,12 @@ c load data
                err=v4**2
                upval(1,k)=y
                uperr(1,k)=err
-               do j=1,maxdnt-1
-                  dnerr(j,k)=1d100
+               do j=2,maxdnt
+c                  dnerr(j,k)=1d100
+                  dnval(j,k)=1d100
                enddo
-               dnval(maxdnt,k)=y
-               dnerr(maxdnt,k)=err
+               dnval(1,k)=y
+               dnerr(1,k)=err
             elseif(imethod.eq.2) then
                if(v4.ne.0) then
                   y=v3/v4**2
@@ -147,11 +148,13 @@ c load data
             do ifile=2,nfiles
                read(unit=line(k,ifile),fmt=*,iostat=ios) v1,v2,v3,v4
                if(imethod.eq.1.or.imethod.eq.3) then
-                  if (v4**2.gt.uperr(maxupt,k)) then
+c                  if (v4**2.gt.uperr(maxupt,k)) then
+                  if (v3.gt.upval(maxupt,k)) then
                      upval(maxupt,k)=v3
                      uperr(maxupt,k)=v4**2
                      do j=maxupt-1,1,-1
-                        if (uperr(j,k).lt.uperr(j+1,k)) then
+c                        if (uperr(j,k).lt.uperr(j+1,k)) then
+                        if (upval(j,k).lt.upval(j+1,k)) then
                            tmpval=upval(j,k)
                            tmperr=uperr(j,k)
                            upval(j,k)=upval(j+1,k)
@@ -161,11 +164,13 @@ c load data
                         endif
                      enddo
                   endif
-                  if (v4**2.lt.dnerr(maxdnt,k)) then
+c                  if (v4**2.lt.dnerr(maxdnt,k)) then
+                  if (v3.lt.dnval(maxdnt,k)) then
                      dnval(maxdnt,k)=v3
                      dnerr(maxdnt,k)=v4**2
                      do j=maxdnt-1,1,-1
-                        if (dnerr(j,k).gt.dnerr(j+1,k)) then
+c                        if (dnerr(j,k).gt.dnerr(j+1,k)) then
+                        if (dnval(j,k).gt.dnval(j+1,k)) then
                            tmpval=dnval(j,k)
                            tmperr=dnerr(j,k)
                            dnval(j,k)=dnval(j+1,k)
@@ -234,7 +239,8 @@ c--- trimming
                   err=err-uperr(j,k)
                enddo
                nfilest=nfiles-maxupt
-               if (dnerr(1,k).lt.1d100) then
+c               if (dnerr(1,k).lt.1d100) then
+               if (dnval(1,k).lt.1d100) then
                   do j=1,maxdnt
                      y=y-dnval(j,k)
                      err=err-dnerr(j,k)
