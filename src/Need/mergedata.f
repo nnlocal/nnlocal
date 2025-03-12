@@ -114,7 +114,8 @@ c load data
       do k=1,nlines(1)
          read(unit=line(k,1),fmt=*,iostat=ios) v1,v2,v3,v4
          if(ios.ne.0) then
-            write(12,'(a)') line(k,1)(1:ilength(line(k,1)))
+            if (maxupt+maxdnt.eq.0)
+     1       write(12,'(a)') line(k,1)(1:ilength(line(k,1)))
          else
             if(imethod.eq.1) then
                y=v3
@@ -216,7 +217,8 @@ c                        if (dnerr(j,k).gt.dnerr(j+1,k)) then
             elseif(imethod.ge.3) then
                err=sqrt(err)
             endif
-            write(12,'(4(1x,d14.8))') v1,v2,y,err
+            if (maxupt+maxdnt.eq.0)
+     1           write(12,'(4(1x,d14.8))') v1,v2,y,err
          endif
       enddo
       if (maxupt+maxdnt.eq.0) return
