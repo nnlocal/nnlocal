@@ -6,6 +6,9 @@ seed=100
 ncores=8
 nprocessesgrid=8
 nprocessesaccu=16
+alpha=0.065
+mtrim=$(echo "scale=4; $alpha * $nprocessesaccu" | bc)
+mtrim=$(echo "scale=0; $mtrim / 1" | bc)
 
 # First compile the nnlocal executable in the ../../ directory
 #
@@ -64,5 +67,14 @@ wait
 (echo 2 0 0 ; ls -c1 ????-????.gnu ; echo "") | ../mergedata
 mv fort.12 nnlocal-2.top
 
-(echo -n end '     ' ; date ) >> Timings.txt
+wait
 
+if [ $mtrim -eq 0 ]; then
+    cp nnlocal-1.top nnlocal-0-0.top
+else
+    (echo 1 $mtrim $mtrim ; ls -c1 ????-????.gnu ; echo "") | ../mergedata
+    rm fort.12
+    mv fort.13 nnlocal-$mtrim-$mtrim.top
+fi
+
+(echo -n end '     ' ; date ) >> Timings.txt

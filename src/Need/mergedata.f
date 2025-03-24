@@ -17,7 +17,7 @@ c one per line, to be merged. An empty lines terminates the list.
       external ilength
 
       integer maxup,maxdn,j,nfilest
-      parameter (maxup=5,maxdn=5)
+      parameter (maxup=250,maxdn=250)
       real * 8 upval(maxup,maxlines),uperr(maxup,maxlines)
       real * 8 dnval(maxdn,maxlines),dnerr(maxdn,maxlines)
       real * 8 tmpval,tmperr
